@@ -50,24 +50,24 @@ public class ImageFileView extends FileView {
         return type;
     }
 
-    @Override
-    public Icon getIcon(File f) {
-        String extension = Utils.getExtension(f);
-        Icon icon = null;
-
-        if (extension != null) {
-            if (extension.equals(Utils.JPEG) ||
-                    extension.equals(Utils.JPG)) {
-                icon = jpgIcon;
-            } else if (extension.equals(Utils.GIF)) {
-                icon = gifIcon;
-            } else if (extension.equals(Utils.TIFF) ||
-                    extension.equals(Utils.TIF)) {
-                icon = tiffIcon;
-            } else if (extension.equals(Utils.PNG)) {
-                icon = pngIcon;
-            }
-        }
-        return icon;
-    }
+//    @Override
+//    public Icon getIcon(File f) {
+//        String extension = Utils.getExtension(f);
+//        Icon icon = null;
+//
+//        if (extension != null) {
+//            if (extension.equals(Utils.JPEG) ||
+//                    extension.equals(Utils.JPG)) {
+//                icon = jpgIcon;
+//            } else if (extension.equals(Utils.GIF)) {
+//                icon = gifIcon;
+//            } else if (extension.equals(Utils.TIFF) ||
+//                    extension.equals(Utils.TIF)) {
+//                icon = tiffIcon;
+//            } else if (extension.equals(Utils.PNG)) {
+//                icon = pngIcon;
+//            }
+//        }
+//        return icon;
+//    }
 }

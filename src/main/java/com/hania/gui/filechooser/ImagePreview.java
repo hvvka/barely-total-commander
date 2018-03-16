@@ -3,6 +3,7 @@ package com.hania.gui.filechooser;
 import java.beans.*;
 import java.awt.*;
 import java.io.File;
+import java.lang.ref.WeakReference;
 
 import javax.swing.*;
 
@@ -29,7 +30,9 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
         //Don't use createImageIcon (which is a wrapper for getResource)
         //because the image we're trying to load is probably not one
         //of this program's own resources.
-        ImageIcon tmpIcon = new ImageIcon(file.getPath());
+        WeakReference<ImageIcon> wr = new WeakReference<>(new ImageIcon(file.getPath()));
+        ImageIcon tmpIcon = wr.get();
+
         if (tmpIcon.getIconWidth() > 90) {
             thumbnail = new ImageIcon(tmpIcon.getImage().getScaledInstance(90, -1, Image.SCALE_DEFAULT));
         } else { //no need to miniaturize
