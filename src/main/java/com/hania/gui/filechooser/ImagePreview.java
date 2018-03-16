@@ -33,10 +33,12 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
         WeakReference<ImageIcon> wr = new WeakReference<>(new ImageIcon(file.getPath()));
         ImageIcon tmpIcon = wr.get();
 
-        if (tmpIcon.getIconWidth() > 90) {
-            thumbnail = new ImageIcon(tmpIcon.getImage().getScaledInstance(90, -1, Image.SCALE_DEFAULT));
-        } else { //no need to miniaturize
-            thumbnail = tmpIcon;
+        if (tmpIcon != null) {
+            if (tmpIcon.getIconWidth() > 90) {
+                thumbnail = new ImageIcon(tmpIcon.getImage().getScaledInstance(90, -1, Image.SCALE_DEFAULT));
+            } else { //no need to miniaturize
+                thumbnail = tmpIcon;
+            }
         }
     }
 

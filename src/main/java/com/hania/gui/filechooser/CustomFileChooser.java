@@ -13,7 +13,7 @@ import java.io.File;
 public class CustomFileChooser extends JPanel implements ActionListener {
 
     private JTextArea log;
-    private JFileChooser fc;
+    private JFileChooser fileChooser;
 
     private CustomFileChooser() {
         super(new BorderLayout());
@@ -34,30 +34,31 @@ public class CustomFileChooser extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         //Set up the file chooser.
-        if (fc == null) {
-            fc = new JFileChooser();
+        if (fileChooser == null) {
+            fileChooser = new JFileChooser();
+
 
             //Add a custom file filter and disable the default
             //(Accept All) file filter.
-            fc.addChoosableFileFilter(new FileNameExtensionFilter("JPG", Utils.JPG));
-            fc.addChoosableFileFilter(new FileNameExtensionFilter("PNG", Utils.PNG));
-            fc.addChoosableFileFilter(new FileNameExtensionFilter("JPEG", Utils.JPEG));
-            fc.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPG", Utils.JPG));
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG", Utils.PNG));
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPEG", Utils.JPEG));
+            fileChooser.setAcceptAllFileFilterUsed(false);
 
             //Add custom icons for file types.
-            fc.setFileView(new ImageFileView());
+            fileChooser.setFileView(new ImageFileView());
 
             //Add the preview pane.
-            fc.setAccessory(new ImagePreview(fc));
+            fileChooser.setAccessory(new ImagePreview(fileChooser));
         }
 
         //Show it.
-        int returnVal = fc.showDialog(CustomFileChooser.this, "Attach");
+        int returnVal = fileChooser.showDialog(CustomFileChooser.this, "Attach");
 
         //Process the results.
         String newline = "\n";
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
+            File file = fileChooser.getSelectedFile();
             log.append("Attaching file: " + file.getName() + "." + newline);
         } else {
             log.append("Attachment cancelled by user." + newline);
@@ -65,7 +66,7 @@ public class CustomFileChooser extends JPanel implements ActionListener {
         log.setCaretPosition(log.getDocument().getLength());
 
         //Reset the file chooser for the next time it's shown.
-        fc.setSelectedFile(null);
+        fileChooser.setSelectedFile(null);
     }
 
     /**
@@ -75,7 +76,7 @@ public class CustomFileChooser extends JPanel implements ActionListener {
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("Almost Total Commander");
+        JFrame frame = new JFrame("Barely Total Commander");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //Add content to the window.

@@ -23,15 +23,16 @@ public class Utils {
     /*
      * Get the extension of a file.
      */
-    public static String getExtension(File f) {
-        String ext = null;
-        String s = f.getName();
-        int i = s.lastIndexOf('.');
+    public static String getExtension(File file) {
+        String extension = null;
+        String filename = file.getName();
 
-        if (i > 0 &&  i < s.length() - 1) {
-            ext = s.substring(i+1).toLowerCase();
+        int i = filename.lastIndexOf('.');
+
+        if (i > 0 &&  i < filename.length() - 1) {
+            extension = filename.substring(i + 1).toLowerCase();
         }
-        return ext;
+        return extension;
     }
 
     /** Returns an ImageIcon, or null if the path was invalid. */

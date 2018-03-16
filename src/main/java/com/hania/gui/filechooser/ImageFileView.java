@@ -1,6 +1,8 @@
 package com.hania.gui.filechooser;
 
+import java.awt.*;
 import java.io.File;
+import java.lang.ref.WeakReference;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
@@ -30,29 +32,29 @@ public class ImageFileView extends FileView {
     }
 
     @Override
-    public String getTypeDescription(File f) {
-        String extension = Utils.getExtension(f);
-        String type = null;
+    public String getTypeDescription(File file) {
+        String extension = Utils.getExtension(file);
+        String typeDescription = null;
 
         if (extension != null) {
             if (extension.equals(Utils.JPEG) ||
                     extension.equals(Utils.JPG)) {
-                type = "JPEG Image";
+                typeDescription = "JPEG Image";
             } else if (extension.equals(Utils.GIF)){
-                type = "GIF Image";
+                typeDescription = "GIF Image";
             } else if (extension.equals(Utils.TIFF) ||
                     extension.equals(Utils.TIF)) {
-                type = "TIFF Image";
+                typeDescription = "TIFF Image";
             } else if (extension.equals(Utils.PNG)){
-                type = "PNG Image";
+                typeDescription = "PNG Image";
             }
         }
-        return type;
+        return typeDescription;
     }
 
-//    @Override
-//    public Icon getIcon(File f) {
-//        String extension = Utils.getExtension(f);
+    @Override
+    public Icon getIcon(File file) {
+//        String extension = Utils.getExtension(file);
 //        Icon icon = null;
 //
 //        if (extension != null) {
@@ -69,5 +71,30 @@ public class ImageFileView extends FileView {
 //            }
 //        }
 //        return icon;
-//    }
+
+        if (file.isDirectory()) {
+            return null;
+        } else {
+            return getWeakIconReference(file);
+        }
+    }
+
+    private Icon getWeakIconReference(File file) {
+        WeakReference<ImageIcon> wr = new WeakReference<>(new ImageIcon(file.getPath()));
+        ImageIcon icon = wr.get();
+//        ImageIcon icon = new ImageIcon(file.getPath());
+        if (icon != null) {
+            return getScaledIcon(icon);
+        }
+
+        return null;
+    }
+
+    private Icon getScaledIcon(ImageIcon icon) {
+        if (icon.getIconWidth() > 48) {
+            return new ImageIcon(icon.getImage().getScaledInstance(48, -1, Image.SCALE_DEFAULT));
+        } else { //no need to miniaturize
+            return icon;
+        }
+    }
 }
