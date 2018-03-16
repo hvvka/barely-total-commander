@@ -1,18 +1,18 @@
 package com.hania.gui.filechooser;
 
-/**
- * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
- */
 import java.io.File;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
-/* ImageFileView.java is used by FileChooserDemo2.java. */
+/**
+ * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
+ */
 public class ImageFileView extends FileView {
-    private ImageIcon jpgIcon = Utils.createImageIcon("images/jpgIcon.gif");
-    private ImageIcon gifIcon = Utils.createImageIcon("images/gifIcon.gif");
-    private ImageIcon tiffIcon = Utils.createImageIcon("images/tiffIcon.gif");
-    private ImageIcon pngIcon = Utils.createImageIcon("images/pngIcon.png");
+
+    private ImageIcon jpgIcon = Utils.createImageIcon("icons/jpg.icns");
+    private ImageIcon gifIcon = Utils.createImageIcon("icons/gif.icns");
+    private ImageIcon tiffIcon = Utils.createImageIcon("icons/tiff.icns");
+    private ImageIcon pngIcon = Utils.createImageIcon("icons/png.icns");
 
     @Override
     public String getName(File f) {
@@ -35,15 +35,15 @@ public class ImageFileView extends FileView {
         String type = null;
 
         if (extension != null) {
-            if (extension.equals(Utils.jpeg) ||
-                    extension.equals(Utils.jpg)) {
+            if (extension.equals(Utils.JPEG) ||
+                    extension.equals(Utils.JPG)) {
                 type = "JPEG Image";
-            } else if (extension.equals(Utils.gif)){
+            } else if (extension.equals(Utils.GIF)){
                 type = "GIF Image";
-            } else if (extension.equals(Utils.tiff) ||
-                    extension.equals(Utils.tif)) {
+            } else if (extension.equals(Utils.TIFF) ||
+                    extension.equals(Utils.TIF)) {
                 type = "TIFF Image";
-            } else if (extension.equals(Utils.png)){
+            } else if (extension.equals(Utils.PNG)){
                 type = "PNG Image";
             }
         }
@@ -56,15 +56,15 @@ public class ImageFileView extends FileView {
         Icon icon = null;
 
         if (extension != null) {
-            if (extension.equals(Utils.jpeg) ||
-                    extension.equals(Utils.jpg)) {
+            if (extension.equals(Utils.JPEG) ||
+                    extension.equals(Utils.JPG)) {
                 icon = jpgIcon;
-            } else if (extension.equals(Utils.gif)) {
+            } else if (extension.equals(Utils.GIF)) {
                 icon = gifIcon;
-            } else if (extension.equals(Utils.tiff) ||
-                    extension.equals(Utils.tif)) {
+            } else if (extension.equals(Utils.TIFF) ||
+                    extension.equals(Utils.TIF)) {
                 icon = tiffIcon;
-            } else if (extension.equals(Utils.png)) {
+            } else if (extension.equals(Utils.PNG)) {
                 icon = pngIcon;
             }
         }

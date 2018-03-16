@@ -1,14 +1,14 @@
 package com.hania.gui.filechooser;
 
-/**
- * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
- */
-import javax.swing.*;
 import java.beans.*;
 import java.awt.*;
 import java.io.File;
 
-/* ImagePreview.java by FileChooserDemo2.java. */
+import javax.swing.*;
+
+/**
+ * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
+ */
 public class ImagePreview extends JComponent implements PropertyChangeListener {
 
     private ImageIcon thumbnail = null;
@@ -39,15 +39,15 @@ public class ImagePreview extends JComponent implements PropertyChangeListener {
 
     public void propertyChange(PropertyChangeEvent e) {
         boolean update = false;
-        String prop = e.getPropertyName();
+        String property = e.getPropertyName();
 
         //If the directory changed, don't show an image.
-        if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(prop)) {
+        if (JFileChooser.DIRECTORY_CHANGED_PROPERTY.equals(property)) {
             file = null;
             update = true;
 
             //If a file became selected, find out which one.
-        } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(prop)) {
+        } else if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(property)) {
             file = (File) e.getNewValue();
             update = true;
         }

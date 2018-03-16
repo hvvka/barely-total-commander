@@ -39,9 +39,9 @@ public class CustomFileChooser extends JPanel implements ActionListener {
 
             //Add a custom file filter and disable the default
             //(Accept All) file filter.
-            fc.addChoosableFileFilter(new FileNameExtensionFilter("JPG", Utils.jpg));
-            fc.addChoosableFileFilter(new FileNameExtensionFilter("PNG", Utils.png));
-            fc.addChoosableFileFilter(new FileNameExtensionFilter("JPEG", Utils.jpeg));
+            fc.addChoosableFileFilter(new FileNameExtensionFilter("JPG", Utils.JPG));
+            fc.addChoosableFileFilter(new FileNameExtensionFilter("PNG", Utils.PNG));
+            fc.addChoosableFileFilter(new FileNameExtensionFilter("JPEG", Utils.JPEG));
             fc.setAcceptAllFileFilterUsed(false);
 
             //Add custom icons for file types.
