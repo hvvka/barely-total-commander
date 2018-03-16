@@ -11,11 +11,6 @@ import javax.swing.filechooser.*;
  */
 public class ImageFileView extends FileView {
 
-    private ImageIcon jpgIcon = Utils.createImageIcon("icons/jpg.icns");
-    private ImageIcon gifIcon = Utils.createImageIcon("icons/gif.icns");
-    private ImageIcon tiffIcon = Utils.createImageIcon("icons/tiff.icns");
-    private ImageIcon pngIcon = Utils.createImageIcon("icons/png.icns");
-
     @Override
     public String getName(File f) {
         return null; //let the L&F FileView figure this out
@@ -54,24 +49,6 @@ public class ImageFileView extends FileView {
 
     @Override
     public Icon getIcon(File file) {
-//        String extension = Utils.getExtension(file);
-//        Icon icon = null;
-//
-//        if (extension != null) {
-//            if (extension.equals(Utils.JPEG) ||
-//                    extension.equals(Utils.JPG)) {
-//                icon = jpgIcon;
-//            } else if (extension.equals(Utils.GIF)) {
-//                icon = gifIcon;
-//            } else if (extension.equals(Utils.TIFF) ||
-//                    extension.equals(Utils.TIF)) {
-//                icon = tiffIcon;
-//            } else if (extension.equals(Utils.PNG)) {
-//                icon = pngIcon;
-//            }
-//        }
-//        return icon;
-
         if (file.isDirectory()) {
             return null;
         } else {
@@ -82,7 +59,6 @@ public class ImageFileView extends FileView {
     private Icon getWeakIconReference(File file) {
         WeakReference<ImageIcon> wr = new WeakReference<>(new ImageIcon(file.getPath()));
         ImageIcon icon = wr.get();
-//        ImageIcon icon = new ImageIcon(file.getPath());
         if (icon != null) {
             return getScaledIcon(icon);
         }
