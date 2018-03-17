@@ -4,11 +4,17 @@ import com.hania.FileRecordLoader;
 import com.hania.ImageFileChooser;
 import com.hania.model.FileRecord;
 import com.hania.view.MainFrame;
+import org.imgscalr.Scalr;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -76,6 +82,18 @@ public class MainFrameController {
                 JList list = (JList) e.getSource();
                 if (e.getClickCount() == 2) {
                     int index = list.locationToIndex(e.getPoint());
+//                    contentPane.removeAll();
+//                    File file = files.get(index);
+//                    BufferedImage img = null;
+//                    try {
+//                        img = ImageIO.read(file);
+//                    } catch (IOException ee) {
+//                        ee.printStackTrace();
+//                    }
+//                    BufferedImage scaledImg = Scalr.resize(Objects.requireNonNull(img), 700);
+//
+//                    JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+//                    contentPane.add(imageLabel);
                     System.out.println(index);
                 }
             }
