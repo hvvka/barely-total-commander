@@ -1,4 +1,4 @@
-package com.hania.gui.filechooser;
+package com.hania;
 
 import java.io.File;
 import java.net.URL;

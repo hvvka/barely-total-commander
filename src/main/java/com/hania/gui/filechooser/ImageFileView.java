@@ -1,5 +1,7 @@
 package com.hania.gui.filechooser;
 
+import com.hania.Utils;
+
 import java.awt.*;
 import java.io.File;
 import java.lang.ref.WeakReference;
