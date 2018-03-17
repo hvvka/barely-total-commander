@@ -1,7 +1,6 @@
 package com.hania;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
 /**
@@ -13,12 +12,7 @@ public class ImageFileChooser extends JFileChooser {
 
     public ImageFileChooser() {
         super(DIRECTORY_PATH);
-
-        this.addChoosableFileFilter(new FileNameExtensionFilter("JPG", Utils.JPG));
-        this.addChoosableFileFilter(new FileNameExtensionFilter("PNG", Utils.PNG));
-        this.addChoosableFileFilter(new FileNameExtensionFilter("JPEG", Utils.JPEG));
-        this.setAcceptAllFileFilterUsed(false);
-
+        this.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         this.setSelectedFile(new File(DIRECTORY_PATH));
     }
 }

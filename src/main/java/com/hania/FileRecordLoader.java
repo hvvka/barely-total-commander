@@ -5,8 +5,8 @@ import com.hania.model.FileRecord;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 
 /**
@@ -21,18 +21,23 @@ public class FileRecordLoader {
     public FileRecordLoader(ImageFileChooser imageFileChooser) {
         this.imageFileChooser = imageFileChooser;
 
+        if(imageFileChooser.getSelectedFile() == null) return;
+
         File file = imageFileChooser.getSelectedFile();
         if(file.isDirectory()) {
             createFileRecord(file);
         }
     }
 
-    public FileRecord getFileRecord() {
-        return fileRecord;
+    public JList<File> getFileRecordList() {
+        JList<File> list = new JList<>(imageFileChooser.getSelectedFile()
+                .listFiles((dir, name) -> name.matches("^[^.].*\\.(gif|jpg|jpeg|tiff|png)$")));
+        list.setCellRenderer(new ImageListRenderer());
+        return list;
     }
 
     private void createFileRecord(File file) {
-        File[] files = file.listFiles((FileFilter) imageFileChooser.getFileFilter());
+        File[] files = file.listFiles((dir, name) -> name.matches("^[^.].*\\.(gif|jpg|jpeg|tiff|png)$"));
         if (files != null) {
             fillFileRecord(files);
         }
@@ -50,6 +55,21 @@ public class FileRecordLoader {
             fileRecord.putFileRecord(file.getAbsolutePath(), new CachedImage(file.getName(), new ImageIcon(ImageIO.read(file))));
         } catch (IOException e) {
             System.out.println("Achtung! Loading image exception.");
+        }
+    }
+
+    class ImageListRenderer extends DefaultListCellRenderer {
+
+        @Override
+        public Component getListCellRendererComponent(
+                JList list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+
+            JLabel label = (JLabel) super.getListCellRendererComponent(
+                    list, value, index, isSelected, cellHasFocus);
+            label.setIcon(fileRecord.getRecords().get(value).get().getImage());
+            label.setHorizontalTextPosition(JLabel.RIGHT);
+            return label;
         }
     }
 }

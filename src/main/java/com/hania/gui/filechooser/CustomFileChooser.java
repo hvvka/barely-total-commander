@@ -1,7 +1,5 @@
 package com.hania.gui.filechooser;
 
-import com.hania.Utils;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;

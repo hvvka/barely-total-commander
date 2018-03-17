@@ -21,4 +21,8 @@ public class CachedImage {
         this.filename = filename;
         this.image = image;
     }
+
+    public ImageIcon getImage() {
+        return image;
+    }
 }
