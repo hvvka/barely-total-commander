@@ -84,7 +84,7 @@ public class PluginClassLoader extends ClassLoader {
         return c.getMethods();
     }
 
-    private static Object parse(Class<?> cp, String s) {
+    static Object parse(Class<?> cp, String s) {
         if (cp.equals(Integer.TYPE) || cp.equals(Integer.class)) {
             return Integer.parseInt(s);
         } else if (cp.equals(Long.TYPE) || cp.equals(Long.class)) {
@@ -147,49 +147,4 @@ public class PluginClassLoader extends ClassLoader {
         } while (!koniec);
     }
 
-//    public static void main(String[] args)
-//            throws InstantiationException, IllegalAccessException, InvocationTargetException {
-//
-//        MojClassLoader mcl = new MojClassLoader();
-//
-//        Class c;
-//        Scanner read = new Scanner(System.in);
-//
-//        boolean petla;
-//        Logowanie logowanie;
-//        String login;
-//        do {
-//            logowanie = new Logowanie();
-//            System.out.println("Podaj login");
-//            login = read.next();
-//            System.out.println("Podaj haslo");
-//            String haslo = read.next();
-//            petla = logowanie.autentykuj(login, haslo);
-//        } while (!petla);
-//        Object o;
-//        do {
-//            System.out.println("Podaj nazwe klasy");
-//            String nazwaKlasy = read.next();
-//            if (!logowanie.czyUprawniony(login, nazwaKlasy))
-//                continue;
-//            c = mcl.loadClass(nazwaKlasy);
-//            if (c == null)
-//                continue;
-//            o = c.newInstance();
-//            System.out.println("Modyfikator: " + Modifier.toString(c.getModifiers()));
-//            break;
-//        } while(true);
-//
-//        while(true) {
-//
-//            System.out.println("1. Wyswietl metody" +
-//                    "\n2. Wyswietl argumenty");
-//            int wybor;
-//            wybor = read.nextInt();
-//            switch (wybor) {
-//                case 1: invokeMethods(o, read, c); break;
-//                case 2: invokeFields(o, read, c); break;
-//            }
-//        }
-//    }
 }

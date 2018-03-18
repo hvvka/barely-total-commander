@@ -2,6 +2,8 @@ package com.hania.controller;
 
 import com.hania.FileRecordLoader;
 import com.hania.ImageFileChooser;
+import com.hania.PluginGenerator;
+import com.hania.PluginType;
 import com.hania.view.MainFrame;
 
 import javax.swing.*;
@@ -39,6 +41,7 @@ public class MainFrameController {
 
     private JList fileRecordList;
     private ImageFileChooser imageFileChooser;
+    private PluginGenerator pluginGenerator;
 
     public MainFrameController() {
         mainFrame = new MainFrame();
@@ -53,8 +56,16 @@ public class MainFrameController {
     }
 
     private void addPluginListeners() {
-        pluginNegativeMenuItem.addActionListener(e -> {
+        pluginGenerator = new PluginGenerator();
 
+        pluginNegativeMenuItem.addActionListener(e -> {
+            Object negativePlugin = pluginGenerator.getPlugin(PluginType.NEGATIVE);
+            String path = "/Users/hg/Desktop/tasty.jpg";
+            ImageIcon negativeImageIcon = pluginGenerator.invokeConvertIconMethod(negativePlugin, path);
+            JLabel tmpLabel = new JLabel(negativeImageIcon);
+            contentPane.add(tmpLabel);
+            mainFrame.repaint();
+            mainFrame.revalidate();
         });
     }
 

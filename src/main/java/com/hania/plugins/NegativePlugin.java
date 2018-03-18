@@ -17,7 +17,7 @@ public class NegativePlugin extends Plugin {
         int height = bufferedImage.getHeight();
 //        ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
 //        op.filter(negativeBufferedImage, negativeBufferedImage);
-        negativeBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
-        return new ImageIcon(negativeBufferedImage);
+        negativeBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+        return new ImageIcon(bufferedImage);
     }
 }
