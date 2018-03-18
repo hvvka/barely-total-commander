@@ -1,11 +1,7 @@
 package com.hania;
 
 import java.io.FileInputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Hashtable;
-import java.util.Scanner;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -79,72 +75,4 @@ public class PluginClassLoader extends ClassLoader {
 
         return result;
     }
-
-    public static Method[] getMetods(Class c) {
-        return c.getMethods();
-    }
-
-    static Object parse(Class<?> cp, String s) {
-        if (cp.equals(Integer.TYPE) || cp.equals(Integer.class)) {
-            return Integer.parseInt(s);
-        } else if (cp.equals(Long.TYPE) || cp.equals(Long.class)) {
-            return Float.parseFloat(s);
-        } else if (cp.equals(Boolean.TYPE) || cp.equals(Boolean.class)) {
-            return Boolean.parseBoolean(s);
-        } else if (cp.equals(Double.TYPE) || cp.equals(Double.class)) {
-            return Double.parseDouble(s);
-        } else if (cp.equals(Float.TYPE) || cp.equals(Float.class)) {
-            return Float.parseFloat(s);
-        } else if (cp.equals(Short.TYPE) || cp.equals(Short.class)) {
-            return Short.parseShort(s);
-        } else {
-            return s;
-        }
-    }
-
-    private static void invokeMethods(Object o, Scanner read, Class c) throws IllegalAccessException, InvocationTargetException {
-        Method[] methods = c.getMethods();
-        for (int i = 1; i <= methods.length; i++) {
-            System.out.println(i + ".\t" + methods[i - 1].toString());
-        }
-
-        System.out.println("Wybierz metode (1-" + methods.length + ")");
-        int wybor = read.nextInt() - 1;
-        int liczbaArg = methods[wybor].getParameterCount();
-        Object[] argu = new Object[liczbaArg];
-        if (liczbaArg > 0)
-            System.out.println("Podaj argumenty (" + liczbaArg + ")");
-
-        Class<?>[] cp = methods[wybor].getParameterTypes();
-
-        for (int i = 0; i < argu.length; i++) {
-            argu[i] = parse(cp[i], read.next());
-        }
-
-        methods[wybor].invoke(o, argu);
-    }
-
-    public static void invokeFields(Object o, Scanner read, Class c) throws IllegalAccessException {
-        Field[] fields = c.getFields();
-        boolean koniec = false;
-        do {
-            for (int i = 1; i <= fields.length; i++) {
-                System.out.println(i + ".\t" + fields[i - 1].toString());
-            }
-            System.out.println("Wybierz pole (1-" + fields.length + ")");
-            int wybor = read.nextInt() - 1;
-
-            Object wartosc = fields[wybor].get(o);
-            System.out.println("wartosc: " + wartosc);
-            System.out.println("Czy zmienic wartosc?[t/n] Koniec [k]");
-            String decyzja = read.next();
-            if ("t".equals(decyzja)) {
-                System.out.println("Podaj wartosc");
-                Class<?> cp = fields[wybor].getType();
-                fields[wybor].set(o, parse(cp, read.next()));
-            } else if ("k".equals(decyzja))
-                koniec = true;
-        } while (!koniec);
-    }
-
 }

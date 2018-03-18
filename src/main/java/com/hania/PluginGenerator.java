@@ -1,16 +1,17 @@
 package com.hania;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Scanner;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
 public class PluginGenerator {
 
+    private static final String NO_PLUGIN_CLASS_NAME = "com.hania.plugins.Plugin";
     private static final String NEGATIVE_PLUGIN_CLASS_NAME = "com.hania.plugins.NegativePlugin";
     private static final String BLACK_WHITE_PLUGIN_CLASS_NAME = "com.hania.plugins.BlackWhitePlugin";
 
@@ -29,31 +30,17 @@ public class PluginGenerator {
         return pluginObject;
     }
 
-    public ImageIcon invokeConvertIconMethod(Object pluginObject, String path) {
+    public BufferedImage invokeConvertIconMethod(Object pluginObject, String path) {
         Method[] methods = pluginObject.getClass().getMethods();
-
-//        for (int i = 1; i <= methods.length; i++) {
-//            System.out.println(i + ".\t" + methods[i - 1].toString());
-//        }
-
-//        Scanner read = new Scanner(System.in);
-//        System.out.println("Wybierz metode (1-" + methods.length + ")");
-//        int wybor = read.nextInt() - 1;
-        int wybor = 0;
-        int liczbaArg = methods[wybor].getParameterCount();
-        Object[] argu = new Object[liczbaArg];
-//        if (liczbaArg > 0)
-//            System.out.println("Podaj argumenty (" + liczbaArg + ")");
-//        Class<?>[] classParameterTypes = methods[wybor].getParameterTypes();
-//        for (int i = 0; i < argu.length; i++) {
-//            argu[i] = PluginClassLoader.parse(classParameterTypes[i], read.next());
-//        }
-        argu[0] = path;
+        int argumentIndex = 0;
+        int numberOfArguments = methods[argumentIndex].getParameterCount();
+        Object[] arguments = new Object[numberOfArguments];
+        arguments[0] = path;
 
         try {
-            return (ImageIcon) methods[wybor].invoke(pluginObject, argu);
+            return (BufferedImage) methods[argumentIndex].invoke(pluginObject, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            System.out.println("Plugin method invocation exception");
         }
 
         return null;
@@ -62,6 +49,7 @@ public class PluginGenerator {
     private void loadPlugin(PluginType pluginType) {
         if (loadPluginClass(pluginType)) return;
 
+        //todo delete SOUTs
         System.out.println("negativePluginClass.getName() = " + pluginClass.getName());
         System.out.println("Modyfikator: " + Modifier.toString(pluginClass.getModifiers()));
 
@@ -80,6 +68,8 @@ public class PluginGenerator {
 
     private String getPluginClassName(PluginType pluginType) {
         switch (pluginType) {
+            case NO_PLUGIN:
+                return NO_PLUGIN_CLASS_NAME;
             case NEGATIVE:
                 return NEGATIVE_PLUGIN_CLASS_NAME;
             case BLACK_WHITE:

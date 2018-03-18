@@ -13,9 +13,9 @@ public abstract class Plugin {
 
     protected BufferedImage bufferedImage;
 
-    public ImageIcon convertIcon(String path) {
+    public BufferedImage convertIcon(String path) {
         readImage(path);
-        return new ImageIcon(bufferedImage);
+        return bufferedImage;
     }
 
     protected void readImage(String path) {

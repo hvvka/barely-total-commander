@@ -11,13 +11,13 @@ public class NegativePlugin extends Plugin {
     private BufferedImage negativeBufferedImage;
 
     @Override
-    public ImageIcon convertIcon(String path) {
+    public BufferedImage convertIcon(String path) {
         this.readImage(path);
         int width = bufferedImage.getWidth();
         int height = bufferedImage.getHeight();
 //        ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
 //        op.filter(negativeBufferedImage, negativeBufferedImage);
         negativeBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-        return new ImageIcon(bufferedImage);
+        return bufferedImage; //fixme
     }
 }

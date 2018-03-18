@@ -1,5 +1,7 @@
 package com.hania.model;
 
+import com.hania.PluginGenerator;
+import com.hania.PluginType;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -19,12 +21,22 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class FileRecord {
 
+    private static final int IMAGE_SIZE = 250;
+
     private ConcurrentMap<String, WeakReference<CachedImage>> records;
 
     private final JList<Object> list;
 
+    private PluginGenerator pluginGenerator;
+
+    private List<File> files;
+
+    private PluginType pluginType;
+
     public FileRecord(List<File> files) {
-        records = setRecords(files);
+        this.files = files;
+        pluginType = PluginType.NO_PLUGIN;
+        records = setRecords();
 
         SortedMap<String, WeakReference<CachedImage>> sortedImageMap = new TreeMap<>(records);
         list = new JList<>(sortedImageMap.keySet().toArray());
@@ -32,12 +44,12 @@ public class FileRecord {
         list.setCellRenderer(new ImageListRenderer());
     }
 
-    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords(List<File> files) {
+    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords() {
         ConcurrentMap<String, WeakReference<CachedImage>> map = new ConcurrentHashMap<>();
-        for (File file : files) {
+        for (File file : this.files) {
             WeakReference<CachedImage> weakCachedImage = getCachedImage(file);
             if (weakCachedImage.get() == null) {
-                System.err.println("Lack of reference");
+                System.err.println("Lack of reference.");
             } else {
                 addRecordToMap(map, file, weakCachedImage);
             }
@@ -54,13 +66,10 @@ public class FileRecord {
         }
     }
 
-    public Map<String, WeakReference<CachedImage>> getRecords() {
-        return records;
-    }
-
-    public void putFileRecord(String path, CachedImage cachedImage) {
-        WeakReference<CachedImage> imageWeakReference = new WeakReference<>(cachedImage);
-        records.put(path, imageWeakReference);
+    public void applyPlugin(PluginType pluginType) {
+        pluginGenerator = new PluginGenerator();
+        this.pluginType = pluginType;
+        setRecords();
     }
 
     public JList<Object> getList() {
@@ -68,14 +77,29 @@ public class FileRecord {
     }
 
     private WeakReference<CachedImage> getCachedImage(File file) {
-        BufferedImage img = null;
+        BufferedImage scaledImage = getBufferedImage(file);
+        return new WeakReference<>(new CachedImage(file.getName(), new ImageIcon(scaledImage)));
+    }
+
+    private BufferedImage getBufferedImage(File file) {
+        BufferedImage bufferedImage = null;
         try {
-            img = ImageIO.read(file);
+            bufferedImage = ImageIO.read(file);
         } catch (IOException e) {
             System.err.println("Achtung! Loading image exception.");
         }
-        BufferedImage scaledImg = Scalr.resize(Objects.requireNonNull(img), 250);
-        return new WeakReference<>(new CachedImage(file.getName(), new ImageIcon(scaledImg)));
+
+        bufferedImage = convertImageWithPlugin(file, bufferedImage);
+        return Scalr.resize(Objects.requireNonNull(bufferedImage), IMAGE_SIZE);
+    }
+
+    private BufferedImage convertImageWithPlugin(File file, BufferedImage bufferedImage) {
+        if (pluginType != PluginType.NO_PLUGIN) {
+            Object customPlugin = pluginGenerator.getPlugin(pluginType);
+            bufferedImage = pluginGenerator.invokeConvertIconMethod(customPlugin, file.getAbsolutePath());
+            System.out.println("____>>>!!! APPLYING PLUGIN !!!<<<_____");
+        }
+        return bufferedImage;
     }
 
     class ImageListRenderer extends DefaultListCellRenderer {

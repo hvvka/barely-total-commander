@@ -41,7 +41,7 @@ public class MainFrameController {
 
     private JList fileRecordList;
     private ImageFileChooser imageFileChooser;
-    private PluginGenerator pluginGenerator;
+    private FileRecordLoader fileRecordLoader;
 
     public MainFrameController() {
         mainFrame = new MainFrame();
@@ -56,22 +56,23 @@ public class MainFrameController {
     }
 
     private void addPluginListeners() {
-        pluginGenerator = new PluginGenerator();
-
         pluginNegativeMenuItem.addActionListener(e -> {
-            Object negativePlugin = pluginGenerator.getPlugin(PluginType.NEGATIVE);
-            String path = "/Users/hg/Desktop/tasty.jpg";
-            ImageIcon negativeImageIcon = pluginGenerator.invokeConvertIconMethod(negativePlugin, path);
-            JLabel tmpLabel = new JLabel(negativeImageIcon);
-            contentPane.add(tmpLabel);
-            mainFrame.repaint();
-            mainFrame.revalidate();
+//            Object negativePlugin = pluginGenerator.getPlugin(PluginType.NEGATIVE);
+//            String path = "/Users/hg/Desktop/tasty.jpg";
+//            ImageIcon negativeImageIcon = pluginGenerator.invokeConvertIconMethod(negativePlugin, path);
+//            JLabel tmpLabel = new JLabel(negativeImageIcon);
+//            contentPane.add(tmpLabel);
+            if(fileRecordLoader != null) {
+                fileRecordLoader.applyPlugin(PluginType.NEGATIVE);
+                mainFrame.repaint();
+                mainFrame.revalidate();
+            }
         });
     }
 
     private void attachDirectory() {
         SwingUtilities.invokeLater(() -> {
-            FileRecordLoader fileRecordLoader = new FileRecordLoader(imageFileChooser);
+            fileRecordLoader = new FileRecordLoader(imageFileChooser);
             fileRecordList = fileRecordLoader.getFileRecordList();
 
             contentPane.remove(scrollPane);

@@ -5,5 +5,5 @@ package com.hania;
  */
 public enum PluginType {
 
-    NEGATIVE, BLACK_WHITE
+    NO_PLUGIN, NEGATIVE, BLACK_WHITE
 }
