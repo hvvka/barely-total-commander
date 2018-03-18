@@ -1,7 +1,6 @@
 package com.hania.view;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -21,7 +20,7 @@ public class MainFrame extends JFrame {
     //Przynajmniej jedna z ładowanych klas powinna być zależna od innej ładowanej klasy (Rozwijanie klas (resolve)).
     private JMenuItem pluginNegativeMenuItem;
     private JMenuItem pluginBlackWhiteMenuItem;
-    private JMenuItem pluginFlipVerticallyMenuItem;
+    private JMenuItem grayScalePluginMenuItem;
     private JMenuItem pluginFlipHorizontallyMenuItem;
 
     private JPanel contentPane;
@@ -59,8 +58,8 @@ public class MainFrame extends JFrame {
         return pluginBlackWhiteMenuItem;
     }
 
-    public JMenuItem getPluginFlipVerticallyMenuItem() {
-        return pluginFlipVerticallyMenuItem;
+    public JMenuItem getGrayScalePluginMenuItem() {
+        return grayScalePluginMenuItem;
     }
 
     public JMenuItem getPluginFlipHorizontallyMenuItem() {

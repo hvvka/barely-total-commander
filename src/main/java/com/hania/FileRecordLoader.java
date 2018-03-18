@@ -13,8 +13,6 @@ public class FileRecordLoader {
 
     private FileRecord fileRecord;
 
-    private PluginGenerator pluginGenerator;
-
     public FileRecordLoader(ImageFileChooser imageFileChooser) {
 
         if(imageFileChooser.getSelectedFile() == null) return;

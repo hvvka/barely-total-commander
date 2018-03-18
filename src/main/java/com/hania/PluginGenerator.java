@@ -12,6 +12,7 @@ import java.lang.reflect.Modifier;
 public class PluginGenerator {
 
     private static final String NO_PLUGIN_CLASS_NAME = "com.hania.plugins.Plugin";
+    private static final String GRAY_SCALE_PLUGIN_CLASS_NAME = "com.hania.plugins.GrayScalePlugin";
     private static final String NEGATIVE_PLUGIN_CLASS_NAME = "com.hania.plugins.NegativePlugin";
     private static final String BLACK_WHITE_PLUGIN_CLASS_NAME = "com.hania.plugins.BlackWhitePlugin";
 
@@ -50,8 +51,8 @@ public class PluginGenerator {
         if (loadPluginClass(pluginType)) return;
 
         //todo delete SOUTs
-        System.out.println("negativePluginClass.getName() = " + pluginClass.getName());
-        System.out.println("Modyfikator: " + Modifier.toString(pluginClass.getModifiers()));
+//        System.out.println("negativePluginClass.getName() = " + pluginClass.getName());
+//        System.out.println("Modyfikator: " + Modifier.toString(pluginClass.getModifiers()));
 
         createPluginInstance();
     }
@@ -74,6 +75,8 @@ public class PluginGenerator {
                 return NEGATIVE_PLUGIN_CLASS_NAME;
             case BLACK_WHITE:
                 return BLACK_WHITE_PLUGIN_CLASS_NAME;
+            case GRAY_SCALE:
+                return GRAY_SCALE_PLUGIN_CLASS_NAME;
             default:
                 return "";
         }

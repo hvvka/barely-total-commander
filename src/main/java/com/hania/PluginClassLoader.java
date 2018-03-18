@@ -10,7 +10,7 @@ public class PluginClassLoader extends ClassLoader {
 
     private Hashtable<String, Class> classes;
 
-    public PluginClassLoader() {
+    PluginClassLoader() {
         classes = new Hashtable<>();
     }
 

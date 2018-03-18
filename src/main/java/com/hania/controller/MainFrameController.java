@@ -2,7 +2,6 @@ package com.hania.controller;
 
 import com.hania.FileRecordLoader;
 import com.hania.ImageFileChooser;
-import com.hania.PluginGenerator;
 import com.hania.PluginType;
 import com.hania.view.MainFrame;
 
@@ -20,7 +19,7 @@ public class MainFrameController {
     private static final String CHOOSE_DIRECTORY_MENU_ITEM_LABEL = "Choose directory";
     private static final String MENU_PLUGIN_LABEL = "Plugins";
     private static final String PLUGIN_FLIP_HORIZONTALLY_MENU_ITEM_LABEL = "Flip horizontally";
-    private static final String PLUGIN_FLIP_VERTICALLY_MENU_ITEM_LABEL = "Flip vertically";
+    private static final String GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL = "Flip vertically";
     private static final String PLUGIN_BLACK_WHITE_MENU_ITEM_LABEL = "Convert to black&white";
     private static final String PLUGIN_NEGATIVE_MENU_ITEM_LABEL = "Convert to negative";
 
@@ -36,7 +35,7 @@ public class MainFrameController {
     private JMenu pluginMenu;
     private JMenuItem pluginNegativeMenuItem;
     private JMenuItem pluginBlackWhiteMenuItem;
-    private JMenuItem pluginFlipVerticallyMenuItem;
+    private JMenuItem grayScalePluginMenuItem;
     private JMenuItem pluginFlipHorizontallyMenuItem;
 
     private JList fileRecordList;
@@ -56,18 +55,22 @@ public class MainFrameController {
     }
 
     private void addPluginListeners() {
-        pluginNegativeMenuItem.addActionListener(e -> {
-//            Object negativePlugin = pluginGenerator.getPlugin(PluginType.NEGATIVE);
-//            String path = "/Users/hg/Desktop/tasty.jpg";
-//            ImageIcon negativeImageIcon = pluginGenerator.invokeConvertIconMethod(negativePlugin, path);
-//            JLabel tmpLabel = new JLabel(negativeImageIcon);
-//            contentPane.add(tmpLabel);
-            if(fileRecordLoader != null) {
-                fileRecordLoader.applyPlugin(PluginType.NEGATIVE);
-                mainFrame.repaint();
-                mainFrame.revalidate();
-            }
-        });
+        pluginNegativeMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NEGATIVE));
+        pluginBlackWhiteMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.BLACK_WHITE));
+        grayScalePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.GRAY_SCALE));
+        //todo add more plugins
+    }
+
+    private void attachPluginToAttachedDirectory(PluginType pluginType) {
+        if(fileRecordLoader != null) {
+            attachPlugin(pluginType);
+        }
+    }
+
+    private void attachPlugin(PluginType pluginType) {
+        fileRecordLoader.applyPlugin(pluginType);
+        mainFrame.repaint();
+        mainFrame.revalidate();
     }
 
     private void attachDirectory() {
@@ -135,9 +138,9 @@ public class MainFrameController {
         pluginFlipHorizontallyMenuItem = new JMenuItem(PLUGIN_FLIP_HORIZONTALLY_MENU_ITEM_LABEL);
         pluginMenu.add(pluginFlipHorizontallyMenuItem);
 
-        pluginFlipVerticallyMenuItem = mainFrame.getPluginFlipVerticallyMenuItem();
-        pluginFlipVerticallyMenuItem = new JMenuItem(PLUGIN_FLIP_VERTICALLY_MENU_ITEM_LABEL);
-        pluginMenu.add(pluginFlipVerticallyMenuItem);
+        grayScalePluginMenuItem = mainFrame.getGrayScalePluginMenuItem();
+        grayScalePluginMenuItem = new JMenuItem(GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL);
+        pluginMenu.add(grayScalePluginMenuItem);
 
         pluginBlackWhiteMenuItem = mainFrame.getPluginBlackWhiteMenuItem();
         pluginBlackWhiteMenuItem = new JMenuItem(PLUGIN_BLACK_WHITE_MENU_ITEM_LABEL);

@@ -1,6 +1,5 @@
 package com.hania.plugins;
 
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 /**

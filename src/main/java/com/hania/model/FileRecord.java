@@ -97,7 +97,7 @@ public class FileRecord {
         if (pluginType != PluginType.NO_PLUGIN) {
             Object customPlugin = pluginGenerator.getPlugin(pluginType);
             bufferedImage = pluginGenerator.invokeConvertIconMethod(customPlugin, file.getAbsolutePath());
-            System.out.println("____>>>!!! APPLYING PLUGIN !!!<<<_____");
+            System.out.println(">>> APPLYING PLUGIN to: " + file.getName());  //todo delete
         }
         return bufferedImage;
     }
