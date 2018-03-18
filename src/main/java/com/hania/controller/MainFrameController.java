@@ -19,9 +19,9 @@ public class MainFrameController {
     private static final String CHOOSE_DIRECTORY_MENU_ITEM_LABEL = "Choose directory";
     private static final String MENU_PLUGIN_LABEL = "Plugins";
     private static final String PLUGIN_FLIP_HORIZONTALLY_MENU_ITEM_LABEL = "Flip horizontally";
-    private static final String GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL = "Flip vertically";
-    private static final String PLUGIN_BLACK_WHITE_MENU_ITEM_LABEL = "Convert to black&white";
-    private static final String PLUGIN_NEGATIVE_MENU_ITEM_LABEL = "Convert to negative";
+    private static final String GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL = "Gray scale";
+    private static final String BLACK_WHITE_PLUGIN_MENU_ITEM_LABEL = "Black&white";
+    private static final String NEGATIVE_PLUGIN_MENU_ITEM_LABEL = "Negative";
 
     private final MainFrame mainFrame;
 
@@ -33,8 +33,8 @@ public class MainFrameController {
     private JMenuItem chooseDirectoryMenuItem;
 
     private JMenu pluginMenu;
-    private JMenuItem pluginNegativeMenuItem;
-    private JMenuItem pluginBlackWhiteMenuItem;
+    private JMenuItem negativePluginMenuItem;
+    private JMenuItem blackWhitePluginMenuItem;
     private JMenuItem grayScalePluginMenuItem;
     private JMenuItem pluginFlipHorizontallyMenuItem;
 
@@ -55,8 +55,8 @@ public class MainFrameController {
     }
 
     private void addPluginListeners() {
-        pluginNegativeMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NEGATIVE));
-        pluginBlackWhiteMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.BLACK_WHITE));
+        negativePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NEGATIVE));
+        blackWhitePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.BLACK_WHITE));
         grayScalePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.GRAY_SCALE));
         //todo add more plugins
     }
@@ -142,13 +142,13 @@ public class MainFrameController {
         grayScalePluginMenuItem = new JMenuItem(GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(grayScalePluginMenuItem);
 
-        pluginBlackWhiteMenuItem = mainFrame.getPluginBlackWhiteMenuItem();
-        pluginBlackWhiteMenuItem = new JMenuItem(PLUGIN_BLACK_WHITE_MENU_ITEM_LABEL);
-        pluginMenu.add(pluginBlackWhiteMenuItem);
+        blackWhitePluginMenuItem = mainFrame.getBlackWhitePluginMenuItem();
+        blackWhitePluginMenuItem = new JMenuItem(BLACK_WHITE_PLUGIN_MENU_ITEM_LABEL);
+        pluginMenu.add(blackWhitePluginMenuItem);
 
-        pluginNegativeMenuItem = mainFrame.getPluginNegativeMenuItem();
-        pluginNegativeMenuItem = new JMenuItem(PLUGIN_NEGATIVE_MENU_ITEM_LABEL);
-        pluginMenu.add(pluginNegativeMenuItem);
+        negativePluginMenuItem = mainFrame.getNegativePluginMenuItem();
+        negativePluginMenuItem = new JMenuItem(NEGATIVE_PLUGIN_MENU_ITEM_LABEL);
+        pluginMenu.add(negativePluginMenuItem);
 
         menu.add(pluginMenu);
     }

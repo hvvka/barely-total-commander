@@ -18,8 +18,8 @@ public class MainFrame extends JFrame {
 
     private JMenu pluginMenu;
     //Przynajmniej jedna z ładowanych klas powinna być zależna od innej ładowanej klasy (Rozwijanie klas (resolve)).
-    private JMenuItem pluginNegativeMenuItem;
-    private JMenuItem pluginBlackWhiteMenuItem;
+    private JMenuItem negativePluginMenuItem;
+    private JMenuItem blackWhitePluginMenuItem;
     private JMenuItem grayScalePluginMenuItem;
     private JMenuItem pluginFlipHorizontallyMenuItem;
 
@@ -50,12 +50,12 @@ public class MainFrame extends JFrame {
         return pluginMenu;
     }
 
-    public JMenuItem getPluginNegativeMenuItem() {
-        return pluginNegativeMenuItem;
+    public JMenuItem getNegativePluginMenuItem() {
+        return negativePluginMenuItem;
     }
 
-    public JMenuItem getPluginBlackWhiteMenuItem() {
-        return pluginBlackWhiteMenuItem;
+    public JMenuItem getBlackWhitePluginMenuItem() {
+        return blackWhitePluginMenuItem;
     }
 
     public JMenuItem getGrayScalePluginMenuItem() {

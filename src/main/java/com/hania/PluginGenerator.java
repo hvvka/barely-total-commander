@@ -49,11 +49,6 @@ public class PluginGenerator {
 
     private void loadPlugin(PluginType pluginType) {
         if (loadPluginClass(pluginType)) return;
-
-        //todo delete SOUTs
-//        System.out.println("negativePluginClass.getName() = " + pluginClass.getName());
-//        System.out.println("Modyfikator: " + Modifier.toString(pluginClass.getModifiers()));
-
         createPluginInstance();
     }
 
@@ -61,7 +56,7 @@ public class PluginGenerator {
         try {
             pluginClass = pluginClassLoader.loadClass(getPluginClassName(pluginType));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Creating plugin class exception!");
             return true;
         }
         return false;
@@ -86,7 +81,7 @@ public class PluginGenerator {
         try {
             pluginObject = pluginClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            System.out.println("Creating plugin instance exception!");
         }
     }
 
