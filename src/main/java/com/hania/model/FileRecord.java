@@ -37,7 +37,7 @@ public class FileRecord {
         for (File file : files) {
             WeakReference<CachedImage> weakCachedImage = getCachedImage(file);
             if (weakCachedImage.get() == null) {
-                System.out.println("Lack of reference");
+                System.err.println("Lack of reference");
             } else {
                 addRecordToMap(map, file, weakCachedImage);
             }
@@ -50,7 +50,7 @@ public class FileRecord {
         try {
             map.put(file.getCanonicalPath(), weakCachedImage);
         } catch (IOException e) {
-            System.out.println("Couldn't add record to map!");
+            System.err.println("Couldn't add record to map!");
         }
     }
 
@@ -72,7 +72,7 @@ public class FileRecord {
         try {
             img = ImageIO.read(file);
         } catch (IOException e) {
-            System.out.println("Achtung! Loading image exception.");
+            System.err.println("Achtung! Loading image exception.");
         }
         BufferedImage scaledImg = Scalr.resize(Objects.requireNonNull(img), 250);
         return new WeakReference<>(new CachedImage(file.getName(), new ImageIcon(scaledImg)));
@@ -89,7 +89,7 @@ public class FileRecord {
                     list, value, index, isSelected, cellHasFocus);
 
             if (records.get(value.toString()).get() == null) {
-                System.out.println("Weak reference is null.");
+                System.err.println("Weak reference is null.");
                 records.put((String) value, getCachedImage(new File(value.toString())));
             }
 

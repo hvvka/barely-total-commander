@@ -2,19 +2,15 @@ package com.hania.controller;
 
 import com.hania.FileRecordLoader;
 import com.hania.ImageFileChooser;
-import com.hania.model.FileRecord;
+import com.hania.PluginClassLoader;
 import com.hania.view.MainFrame;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
+import java.lang.reflect.Modifier;
+import java.util.Scanner;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -56,8 +52,40 @@ public class MainFrameController {
 
     private void initListeners() {
         addChooseDirectoryListener();
+        addPluginListener();
+    }
+
+    private void addPluginListener() {
+        PluginClassLoader pluginClassLoader = new PluginClassLoader();
+        Class negativePluginClass;
+        try {
+            negativePluginClass = pluginClassLoader.loadClass("com.hania.plugins.NegativePlugin");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        System.out.println("negativePluginClass.getName() = " + negativePluginClass.getName());
+        System.out.println("Modyfikator: " + Modifier.toString(negativePluginClass.getModifiers()));
+        try {
+            Object negativePluginObject = negativePluginClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
 
+//
+//        try {
+//            Class plugin = classLoader.loadClass("com.hania.plugins.Plugin");
+//            Class negativePluginClass = classLoader.loadClass("com.hania.plugins.NegativePlugin");
+//            System.out.println("plugin.getName() = " + plugin.getName());
+//            System.out.println("negativePluginClass.getName() = " + negativePluginClass.getName());
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+        pluginNegativeMenuItem.addActionListener(e -> {
+
+        });
     }
 
     private void attachDirectory() {
@@ -92,6 +120,7 @@ public class MainFrameController {
         chooseDirectoryMenuItem.addActionListener(e -> {
             imageFileChooser = new ImageFileChooser();
             int returnVal = imageFileChooser.showOpenDialog(imageFileChooser);
+
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 String path = imageFileChooser.getSelectedFile().getAbsolutePath();
                 mainFrame.setTitle(path);
