@@ -82,18 +82,6 @@ public class MainFrameController {
                 JList list = (JList) e.getSource();
                 if (e.getClickCount() == 2) {
                     int index = list.locationToIndex(e.getPoint());
-//                    contentPane.removeAll();
-//                    File file = files.get(index);
-//                    BufferedImage img = null;
-//                    try {
-//                        img = ImageIO.read(file);
-//                    } catch (IOException ee) {
-//                        ee.printStackTrace();
-//                    }
-//                    BufferedImage scaledImg = Scalr.resize(Objects.requireNonNull(img), 700);
-//
-//                    JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
-//                    contentPane.add(imageLabel);
                     System.out.println(index);
                 }
             }

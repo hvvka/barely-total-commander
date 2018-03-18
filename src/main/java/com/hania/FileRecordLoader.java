@@ -30,24 +30,7 @@ public class FileRecordLoader {
     private void createFileRecord(File file) {
         File[] files = file.listFiles((dir, name) -> name.matches("^[^.].*\\.(gif|jpg|jpeg|tiff|png)$"));
         if (files != null) {
-//            fillFileRecord(files);
             fileRecord = new FileRecord(Arrays.asList(files));
         }
     }
-
-//    private void fillFileRecord(File[] files) {
-//        for(File file : files) {
-//            addOneRecord(file);
-//        }
-//    }
-//
-//    private void addOneRecord(File file) {
-//        try {
-//            BufferedImage img = ImageIO.read(file);
-//            BufferedImage scaledImg = Scalr.resize(Objects.requireNonNull(img), 250);
-//            fileRecord.putFileRecord(file.getAbsolutePath(), new CachedImage(file.getName(), new ImageIcon(scaledImg)));
-//        } catch (IOException e) {
-//            System.out.println("Achtung! Loading image exception.");
-//        }
-//    }
 }

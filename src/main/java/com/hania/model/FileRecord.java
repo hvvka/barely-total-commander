@@ -37,16 +37,21 @@ public class FileRecord {
         for (File file : files) {
             WeakReference<CachedImage> weakCachedImage = getCachedImage(file);
             if (weakCachedImage.get() == null) {
-                System.out.println("Brak referencji");
+                System.out.println("Lack of reference");
             } else {
-                try {
-                    map.put(file.getCanonicalPath(), weakCachedImage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                addRecordToMap(map, file, weakCachedImage);
             }
         }
         return map;
+    }
+
+    private void addRecordToMap(ConcurrentMap<String, WeakReference<CachedImage>> map, File file,
+                                WeakReference<CachedImage> weakCachedImage) {
+        try {
+            map.put(file.getCanonicalPath(), weakCachedImage);
+        } catch (IOException e) {
+            System.out.println("Couldn't add record to map!");
+        }
     }
 
     public Map<String, WeakReference<CachedImage>> getRecords() {
@@ -67,13 +72,13 @@ public class FileRecord {
         try {
             img = ImageIO.read(file);
         } catch (IOException e) {
-            System.out.println("Image reading exception");
+            System.out.println("Achtung! Loading image exception.");
         }
         BufferedImage scaledImg = Scalr.resize(Objects.requireNonNull(img), 250);
         return new WeakReference<>(new CachedImage(file.getName(), new ImageIcon(scaledImg)));
     }
-    class ImageListRenderer extends DefaultListCellRenderer {
 
+    class ImageListRenderer extends DefaultListCellRenderer {
 
         @Override
         public Component getListCellRendererComponent(
@@ -84,7 +89,7 @@ public class FileRecord {
                     list, value, index, isSelected, cellHasFocus);
 
             if (records.get(value.toString()).get() == null) {
-                System.out.println("weak ref się zgubiła");
+                System.out.println("Weak reference is null.");
                 records.put((String) value, getCachedImage(new File(value.toString())));
             }
 

@@ -17,7 +17,7 @@ public class CachedImage {
         filename = "";
     }
 
-    public CachedImage(String filename, ImageIcon image) {
+    CachedImage(String filename, ImageIcon image) {
         this.filename = filename;
         this.image = image;
     }
