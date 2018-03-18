@@ -124,7 +124,7 @@ public class PluginClassLoader extends ClassLoader {
         methods[wybor].invoke(o, argu);
     }
 
-    public static void wywolajPola(Object o, Scanner read, Class c) throws IllegalAccessException {
+    public static void invokeFields(Object o, Scanner read, Class c) throws IllegalAccessException {
         Field[] fields = c.getFields();
         boolean koniec = false;
         do {
@@ -188,7 +188,7 @@ public class PluginClassLoader extends ClassLoader {
 //            wybor = read.nextInt();
 //            switch (wybor) {
 //                case 1: invokeMethods(o, read, c); break;
-//                case 2: wywolajPola(o, read, c); break;
+//                case 2: invokeFields(o, read, c); break;
 //            }
 //        }
 //    }

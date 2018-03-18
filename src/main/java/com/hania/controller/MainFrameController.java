@@ -2,15 +2,12 @@ package com.hania.controller;
 
 import com.hania.FileRecordLoader;
 import com.hania.ImageFileChooser;
-import com.hania.PluginClassLoader;
 import com.hania.view.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Modifier;
-import java.util.Scanner;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -52,37 +49,10 @@ public class MainFrameController {
 
     private void initListeners() {
         addChooseDirectoryListener();
-        addPluginListener();
+        addPluginListeners();
     }
 
-    private void addPluginListener() {
-        PluginClassLoader pluginClassLoader = new PluginClassLoader();
-        Class negativePluginClass;
-        try {
-            negativePluginClass = pluginClassLoader.loadClass("com.hania.plugins.NegativePlugin");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-        System.out.println("negativePluginClass.getName() = " + negativePluginClass.getName());
-        System.out.println("Modyfikator: " + Modifier.toString(negativePluginClass.getModifiers()));
-        try {
-            Object negativePluginObject = negativePluginClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-
-//
-//        try {
-//            Class plugin = classLoader.loadClass("com.hania.plugins.Plugin");
-//            Class negativePluginClass = classLoader.loadClass("com.hania.plugins.NegativePlugin");
-//            System.out.println("plugin.getName() = " + plugin.getName());
-//            System.out.println("negativePluginClass.getName() = " + negativePluginClass.getName());
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
+    private void addPluginListeners() {
         pluginNegativeMenuItem.addActionListener(e -> {
 
         });
