@@ -1,22 +1,29 @@
 package com.hania.plugins;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
 public class NegativePlugin extends Plugin {
 
-    private BufferedImage negativeBufferedImage;
-
     @Override
     public BufferedImage convertIcon(String path) {
         this.readImage(path);
-        int width = bufferedImage.getWidth();
-        int height = bufferedImage.getHeight();
-//        ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-//        op.filter(negativeBufferedImage, negativeBufferedImage);
-        negativeBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
-        return bufferedImage; //fixme
+
+        WritableRaster raster = bufferedImage.getRaster();
+
+        for (int x = 0; x < bufferedImage.getWidth(); x++) {
+            for (int y = 0; y < bufferedImage.getHeight(); y++) {
+                int[] pixels = raster.getPixel(x, y, (int[]) null);
+                pixels[0] ^= 255;
+                pixels[1] ^= 255;
+                pixels[2] ^= 255;
+                raster.setPixel(x, y, pixels);
+            }
+        }
+
+        return this.bufferedImage;
     }
 }

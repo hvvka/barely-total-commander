@@ -1,43 +1,28 @@
 package com.hania.plugins;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
 public class GrayScalePlugin extends Plugin {
 
-    private BufferedImage grayScaleBufferedImage;
-
     @Override
     public BufferedImage convertIcon(String path) {
         this.readImage(path);
-        DataBufferByte dataBufferByte = null;
-        try {
-            dataBufferByte = (DataBufferByte) ImageIO.read(new File(path))
-                    .getRaster()
-                    .getDataBuffer();
-        } catch (IOException e) {
-            System.out.println("DataBufferByte strikes again!");
+
+        WritableRaster raster = bufferedImage.getRaster();
+
+        for (int x = 0; x < bufferedImage.getWidth(); x++) {
+            for (int y = 0; y < bufferedImage.getHeight(); y++) {
+                int[] pixels = raster.getPixel(x, y, (int[]) null);
+                pixels[0] = pixels[1] = pixels[2] = (pixels[0] + pixels[1] + pixels[2]) / 3;
+                raster.setPixel(x, y, pixels);
+            }
         }
 
-        if(dataBufferByte != null) {
-            byte[] byteBufferedImage = dataBufferByte.getData();
-            int[] intBufferedImage = new int[byteBufferedImage.length];
-            for (int i = 0; i < byteBufferedImage.length; i++) intBufferedImage[i] = byteBufferedImage[i] & 0xff;
+        return this.bufferedImage;
 
-            int[] bitMasks = new int[]{0xFF0000, 0xFF00, 0xFF, 0xFF000000};
-            SinglePixelPackedSampleModel sm = new SinglePixelPackedSampleModel(
-                    DataBuffer.TYPE_INT, bufferedImage.getWidth(), bufferedImage.getHeight(), bitMasks);
-            DataBufferInt db = new DataBufferInt(intBufferedImage, intBufferedImage.length);
-            WritableRaster wr = Raster.createWritableRaster(sm, db, new Point());
-            grayScaleBufferedImage = new BufferedImage(ColorModel.getRGBdefault(), wr, false, null);
-//            grayScaleBufferedImage = new BufferedImage();
-        }
-        return grayScaleBufferedImage; //fixme
     }
 }
