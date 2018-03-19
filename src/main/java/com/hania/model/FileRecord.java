@@ -13,21 +13,22 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-public class FileRecord extends SwingWorker<Integer, String> {
+//todo move this away from `model` package
+public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, WeakReference<CachedImage>>> {
 
     private static final int IMAGE_SIZE = 250;
 
     private ConcurrentMap<String, WeakReference<CachedImage>> records;
 
-    private final JList<Object> list;
+    private JList<Object> list;
+
+    private DefaultListModel<Object> model;
 
     private PluginGenerator pluginGenerator;
 
@@ -35,40 +36,35 @@ public class FileRecord extends SwingWorker<Integer, String> {
 
     private PluginType pluginType;
 
-    public FileRecord(List<File> files) {
+    public FileRecord(List<File> files, PluginType pluginType) {
         this.files = files;
-        pluginType = PluginType.NO_PLUGIN;
-        records = setRecords();
 
-        SortedMap<String, WeakReference<CachedImage>> sortedImageMap = new TreeMap<>(records);
-        list = new JList<>(sortedImageMap.keySet().toArray());
-
-        list.setCellRenderer(new ImageListRenderer());
-    }
-
-    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords() {
-        ConcurrentMap<String, WeakReference<CachedImage>> map = new ConcurrentHashMap<>();
-        for (File file : this.files) {
-            WeakReference<CachedImage> weakCachedImage;
-            weakCachedImage = getCachedImage(file);
-            addRecordToMap(map, file, weakCachedImage);
-        }
-        return map;
-    }
-
-    private void addRecordToMap(ConcurrentMap<String, WeakReference<CachedImage>> map, File file,
-                                WeakReference<CachedImage> weakCachedImage) {
-        try {
-            map.put(file.getCanonicalPath(), weakCachedImage);
-        } catch (IOException e) {
-            System.err.println("Couldn't add record to map!");
-        }
-    }
-
-    public void applyPlugin(PluginType pluginType) {
         pluginGenerator = new PluginGenerator();
         this.pluginType = pluginType;
-        setRecords();
+
+        records = new ConcurrentHashMap<>();
+
+        model = new DefaultListModel<>();
+        list = new JList<>(model);
+        list.setCellRenderer(new ImageListRenderer());
+
+        execute();
+    }
+
+    private static void failIfInterrupted() throws InterruptedException {
+        if (Thread.currentThread().isInterrupted()) {
+            throw new InterruptedException("Interrupted while searching files");
+        }
+    }
+
+    private ConcurrentMap.Entry<String, WeakReference<CachedImage>> getRecord(
+            File file, WeakReference<CachedImage> weakCachedImage) {
+        try {
+            return new ConcurrentHashMap.SimpleEntry<>(file.getCanonicalPath(), weakCachedImage);
+        } catch (IOException e) {
+            System.err.println("Couldn't add record to map!");
+            return null;
+        }
     }
 
     public JList<Object> getList() {
@@ -101,25 +97,26 @@ public class FileRecord extends SwingWorker<Integer, String> {
         return bufferedImage;
     }
 
-    @Override
-    protected Integer doInBackground() {
-        // Start
-        publish("Start");
-        setProgress(1);
-
-        // More work was done
-        publish("More work was done");
-        setProgress(10);
-
-        // Complete
-        publish("Complete");
-        setProgress(100);
-        return 1;
+    private void addRecordsToMap(List<ConcurrentMap.Entry<String, WeakReference<CachedImage>>> entries) {
+        for (ConcurrentMap.Entry<String, WeakReference<CachedImage>> entry : entries) {
+            records.put(entry.getKey(), entry.getValue());
+            model.addElement(entry.getKey());
+        }
     }
 
     @Override
-    protected void process(List<String> chunks) {
-        // Messages received from the doInBackground() (when invoking the publish() method)
+    protected Void doInBackground() throws InterruptedException {
+        for (File file : this.files) {
+            publish(getRecord(file, getCachedImage(file)));
+            failIfInterrupted();
+        }
+        return null;
+    }
+
+    @Override
+    protected void process(List<ConcurrentMap.Entry<String, WeakReference<CachedImage>>> chunks) {
+        super.process(chunks);
+        addRecordsToMap(chunks);
     }
 
     class ImageListRenderer extends DefaultListCellRenderer {

@@ -13,28 +13,24 @@ public class FileRecordLoader {
 
     private FileRecord fileRecord;
 
-    public FileRecordLoader(ImageFileChooser imageFileChooser) {
+    public FileRecordLoader(ImageFileChooser imageFileChooser, PluginType pluginType) {
 
         if(imageFileChooser.getSelectedFile() == null) return;
 
         File file = imageFileChooser.getSelectedFile();
         if(file.isDirectory()) {
-            createFileRecord(file);
+            createFileRecord(file, pluginType);
         }
-    }
-
-    public void applyPlugin(PluginType pluginType) {
-        fileRecord.applyPlugin(pluginType);
     }
 
     public JList<Object> getFileRecordList() {
         return fileRecord.getList();
     }
 
-    private void createFileRecord(File file) {
+    private void createFileRecord(File file, PluginType pluginType) {
         File[] files = file.listFiles((dir, name) -> name.matches("^[^.].*\\.(gif|jpg|jpeg|tiff|png)$"));
         if (files != null) {
-            fileRecord = new FileRecord(Arrays.asList(files));
+            fileRecord = new FileRecord(Arrays.asList(files), pluginType);
         }
     }
 }

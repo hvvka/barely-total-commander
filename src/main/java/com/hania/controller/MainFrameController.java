@@ -7,8 +7,6 @@ import com.hania.view.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -71,36 +69,29 @@ public class MainFrameController {
     }
 
     private void attachPlugin(PluginType pluginType) {
-        fileRecordLoader.applyPlugin(pluginType);
+        fileRecordList.removeAll();
+        fileRecordLoader = new FileRecordLoader(imageFileChooser, pluginType);
+        fileRecordList = fileRecordLoader.getFileRecordList();
+
+        contentPane.remove(scrollPane);
+        scrollPane = new JScrollPane(fileRecordList);
+        contentPane.add(scrollPane);
+
         mainFrame.repaint();
         mainFrame.revalidate();
     }
 
     private void attachDirectory() {
         SwingUtilities.invokeLater(() -> {
-            fileRecordLoader = new FileRecordLoader(imageFileChooser);
+            fileRecordLoader = new FileRecordLoader(imageFileChooser, PluginType.NO_PLUGIN);
             fileRecordList = fileRecordLoader.getFileRecordList();
 
             contentPane.remove(scrollPane);
             scrollPane = new JScrollPane(fileRecordList);
             contentPane.add(scrollPane);
-            addListListener();
 
             mainFrame.repaint();
             mainFrame.revalidate();
-        });
-    }
-
-    private void addListListener() {
-        fileRecordList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JList list = (JList) e.getSource();
-                if (e.getClickCount() == 2) {
-                    int index = list.locationToIndex(e.getPoint());
-                    System.out.println(index);
-                }
-            }
         });
     }
 
