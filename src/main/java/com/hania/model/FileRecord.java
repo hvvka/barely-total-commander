@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-public class FileRecord {
+public class FileRecord extends SwingWorker<Integer, String> {
 
     private static final int IMAGE_SIZE = 250;
 
@@ -38,7 +38,7 @@ public class FileRecord {
     public FileRecord(List<File> files) {
         this.files = files;
         pluginType = PluginType.NO_PLUGIN;
-        records = setRecords(false);
+        records = setRecords();
 
         SortedMap<String, WeakReference<CachedImage>> sortedImageMap = new TreeMap<>(records);
         list = new JList<>(sortedImageMap.keySet().toArray());
@@ -46,12 +46,11 @@ public class FileRecord {
         list.setCellRenderer(new ImageListRenderer());
     }
 
-    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords(boolean setImages) {
+    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords() {
         ConcurrentMap<String, WeakReference<CachedImage>> map = new ConcurrentHashMap<>();
         for (File file : this.files) {
             WeakReference<CachedImage> weakCachedImage;
-            // if (setImages)
-            weakCachedImage = getCachedImage(file); //else weakCachedImage = new WeakReference<>(new CachedImage(file.getName(), new ImageIcon(new BufferedImage(1,1,1))));
+            weakCachedImage = getCachedImage(file);
             addRecordToMap(map, file, weakCachedImage);
         }
         return map;
@@ -69,7 +68,7 @@ public class FileRecord {
     public void applyPlugin(PluginType pluginType) {
         pluginGenerator = new PluginGenerator();
         this.pluginType = pluginType;
-        setRecords(true);
+        setRecords();
     }
 
     public JList<Object> getList() {
@@ -97,9 +96,30 @@ public class FileRecord {
         if (pluginType != PluginType.NO_PLUGIN) {
             Object customPlugin = pluginGenerator.getPlugin(pluginType);
             bufferedImage = pluginGenerator.invokeConvertIconMethod(customPlugin, file.getAbsolutePath());
-            System.out.println(">>> APPLYING PLUGIN to: " + file.getName());  //todo delete
+            System.out.println("Applying " + pluginType + " plugin to: " + file.getName());
         }
         return bufferedImage;
+    }
+
+    @Override
+    protected Integer doInBackground() {
+        // Start
+        publish("Start");
+        setProgress(1);
+
+        // More work was done
+        publish("More work was done");
+        setProgress(10);
+
+        // Complete
+        publish("Complete");
+        setProgress(100);
+        return 1;
+    }
+
+    @Override
+    protected void process(List<String> chunks) {
+        // Messages received from the doInBackground() (when invoking the publish() method)
     }
 
     class ImageListRenderer extends DefaultListCellRenderer {
