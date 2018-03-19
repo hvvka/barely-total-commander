@@ -11,9 +11,7 @@ public class GrayScalePlugin extends Plugin {
     @Override
     public BufferedImage convertIcon(String path) {
         this.readImage(path);
-
         WritableRaster raster = bufferedImage.getRaster();
-
         for (int x = 0; x < bufferedImage.getWidth(); x++) {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
                 int[] pixels = raster.getPixel(x, y, (int[]) null);
@@ -21,8 +19,6 @@ public class GrayScalePlugin extends Plugin {
                 raster.setPixel(x, y, pixels);
             }
         }
-
         return this.bufferedImage;
-
     }
 }

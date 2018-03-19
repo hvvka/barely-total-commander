@@ -6,7 +6,7 @@ import java.awt.image.WritableRaster;
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-public class NegativePlugin extends Plugin {
+public class BlackWhitePlugin extends Plugin {
 
     @Override
     public BufferedImage convertIcon(String path) {
@@ -15,12 +15,11 @@ public class NegativePlugin extends Plugin {
         for (int x = 0; x < bufferedImage.getWidth(); x++) {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
                 int[] pixels = raster.getPixel(x, y, (int[]) null);
-                pixels[0] ^= 255;
-                pixels[1] ^= 255;
-                pixels[2] ^= 255;
+                pixels[0] = pixels[1] = pixels[2] = (pixels[0] + pixels[1] + pixels[2]) / 3 > 128 ? 255 : 0;
                 raster.setPixel(x, y, pixels);
             }
         }
         return this.bufferedImage;
     }
 }
+
