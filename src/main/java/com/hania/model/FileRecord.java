@@ -11,8 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.*;
 import java.util.List;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -36,7 +38,7 @@ public class FileRecord {
     public FileRecord(List<File> files) {
         this.files = files;
         pluginType = PluginType.NO_PLUGIN;
-        records = setRecords();
+        records = setRecords(false);
 
         SortedMap<String, WeakReference<CachedImage>> sortedImageMap = new TreeMap<>(records);
         list = new JList<>(sortedImageMap.keySet().toArray());
@@ -44,15 +46,13 @@ public class FileRecord {
         list.setCellRenderer(new ImageListRenderer());
     }
 
-    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords() {
+    private ConcurrentMap<String, WeakReference<CachedImage>> setRecords(boolean setImages) {
         ConcurrentMap<String, WeakReference<CachedImage>> map = new ConcurrentHashMap<>();
         for (File file : this.files) {
-            WeakReference<CachedImage> weakCachedImage = getCachedImage(file);
-            if (weakCachedImage.get() == null) {
-                System.err.println("Lack of reference.");
-            } else {
-                addRecordToMap(map, file, weakCachedImage);
-            }
+            WeakReference<CachedImage> weakCachedImage;
+            // if (setImages)
+            weakCachedImage = getCachedImage(file); //else weakCachedImage = new WeakReference<>(new CachedImage(file.getName(), new ImageIcon(new BufferedImage(1,1,1))));
+            addRecordToMap(map, file, weakCachedImage);
         }
         return map;
     }
@@ -69,7 +69,7 @@ public class FileRecord {
     public void applyPlugin(PluginType pluginType) {
         pluginGenerator = new PluginGenerator();
         this.pluginType = pluginType;
-        setRecords();
+        setRecords(true);
     }
 
     public JList<Object> getList() {
@@ -113,7 +113,7 @@ public class FileRecord {
                     list, value, index, isSelected, cellHasFocus);
 
             if (records.get(value.toString()).get() == null) {
-                System.err.println("Weak reference is null.");
+                System.err.println("Weak reference is null. Loading an image...");
                 records.put((String) value, getCachedImage(new File(value.toString())));
             }
 

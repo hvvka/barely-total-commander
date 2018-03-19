@@ -8,7 +8,7 @@ import java.io.File;
  */
 public class ImageFileChooser extends JFileChooser {
 
-    private static final String DIRECTORY_PATH = "/Volumes/SD/obrazki/Tapety/paintings";
+    private static final String DIRECTORY_PATH = "/Users/hg/Desktop/images";
 
     public ImageFileChooser() {
         super(DIRECTORY_PATH);

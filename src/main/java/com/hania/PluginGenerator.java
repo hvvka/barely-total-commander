@@ -13,6 +13,7 @@ public class PluginGenerator {
     private static final String GRAY_SCALE_PLUGIN_CLASS_NAME = "com.hania.plugins.GrayScalePlugin";
     private static final String NEGATIVE_PLUGIN_CLASS_NAME = "com.hania.plugins.NegativePlugin";
     private static final String BLACK_WHITE_PLUGIN_CLASS_NAME = "com.hania.plugins.BlackWhitePlugin";
+    private static final String SATURATION_PLUGIN_CLASS_NAME = "com.hania.plugins.SaturationPlugin";
 
     private PluginClassLoader pluginClassLoader;
 
@@ -70,6 +71,8 @@ public class PluginGenerator {
                 return BLACK_WHITE_PLUGIN_CLASS_NAME;
             case GRAY_SCALE:
                 return GRAY_SCALE_PLUGIN_CLASS_NAME;
+            case SATURATION:
+                return SATURATION_PLUGIN_CLASS_NAME;
             default:
                 return "";
         }

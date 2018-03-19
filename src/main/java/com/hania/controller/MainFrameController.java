@@ -18,10 +18,11 @@ public class MainFrameController {
     private static final String MENU_DIRECTORY_LABEL = "File explorer";
     private static final String CHOOSE_DIRECTORY_MENU_ITEM_LABEL = "Choose directory";
     private static final String MENU_PLUGIN_LABEL = "Plugins";
-    private static final String PLUGIN_FLIP_HORIZONTALLY_MENU_ITEM_LABEL = "Flip horizontally";
+    private static final String SATURATION_PLUGIN_MENU_ITEM_LABEL = "Increase saturation";
     private static final String GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL = "Gray scale";
     private static final String BLACK_WHITE_PLUGIN_MENU_ITEM_LABEL = "Black&white";
     private static final String NEGATIVE_PLUGIN_MENU_ITEM_LABEL = "Negative";
+    private static final String NO_PLUGIN_MENU_ITEM_LABEL = "No plugin";
 
     private final MainFrame mainFrame;
 
@@ -36,7 +37,8 @@ public class MainFrameController {
     private JMenuItem negativePluginMenuItem;
     private JMenuItem blackWhitePluginMenuItem;
     private JMenuItem grayScalePluginMenuItem;
-    private JMenuItem pluginFlipHorizontallyMenuItem;
+    private JMenuItem saturationPluginMenuItem;
+    private JMenuItem noPluginMenuItem;
 
     private JList fileRecordList;
     private ImageFileChooser imageFileChooser;
@@ -55,10 +57,11 @@ public class MainFrameController {
     }
 
     private void addPluginListeners() {
+        noPluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NO_PLUGIN));
         negativePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NEGATIVE));
         blackWhitePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.BLACK_WHITE));
         grayScalePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.GRAY_SCALE));
-        //todo add more plugins
+        saturationPluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.SATURATION));
     }
 
     private void attachPluginToAttachedDirectory(PluginType pluginType) {
@@ -134,9 +137,9 @@ public class MainFrameController {
         pluginMenu = mainFrame.getPluginMenu();
         pluginMenu = new JMenu(MENU_PLUGIN_LABEL);
 
-        pluginFlipHorizontallyMenuItem = mainFrame.getPluginFlipHorizontallyMenuItem();
-        pluginFlipHorizontallyMenuItem = new JMenuItem(PLUGIN_FLIP_HORIZONTALLY_MENU_ITEM_LABEL);
-        pluginMenu.add(pluginFlipHorizontallyMenuItem);
+        saturationPluginMenuItem = mainFrame.getSaturationPluginMenuItem();
+        saturationPluginMenuItem = new JMenuItem(SATURATION_PLUGIN_MENU_ITEM_LABEL);
+        pluginMenu.add(saturationPluginMenuItem);
 
         grayScalePluginMenuItem = mainFrame.getGrayScalePluginMenuItem();
         grayScalePluginMenuItem = new JMenuItem(GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL);
@@ -149,6 +152,10 @@ public class MainFrameController {
         negativePluginMenuItem = mainFrame.getNegativePluginMenuItem();
         negativePluginMenuItem = new JMenuItem(NEGATIVE_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(negativePluginMenuItem);
+
+        noPluginMenuItem = mainFrame.getNoPluginMenuItem();
+        noPluginMenuItem = new JMenuItem(NO_PLUGIN_MENU_ITEM_LABEL);
+        pluginMenu.add(noPluginMenuItem);
 
         menu.add(pluginMenu);
     }

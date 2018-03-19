@@ -21,7 +21,8 @@ public class MainFrame extends JFrame {
     private JMenuItem negativePluginMenuItem;
     private JMenuItem blackWhitePluginMenuItem;
     private JMenuItem grayScalePluginMenuItem;
-    private JMenuItem pluginFlipHorizontallyMenuItem;
+    private JMenuItem saturationPluginMenuItem;
+    private JMenuItem noPluginMenuItem;
 
     private JPanel contentPane;
     private JScrollPane scrollPane;
@@ -62,8 +63,12 @@ public class MainFrame extends JFrame {
         return grayScalePluginMenuItem;
     }
 
-    public JMenuItem getPluginFlipHorizontallyMenuItem() {
-        return pluginFlipHorizontallyMenuItem;
+    public JMenuItem getNoPluginMenuItem() {
+        return noPluginMenuItem;
+    }
+
+    public JMenuItem getSaturationPluginMenuItem() {
+        return saturationPluginMenuItem;
     }
 
     @Override
