@@ -71,28 +71,23 @@ public class MainFrameController {
     private void attachPlugin(PluginType pluginType) {
         fileRecordList.removeAll();
         fileRecordLoader = new FileRecordLoader(imageFileChooser, pluginType);
-        fileRecordList = fileRecordLoader.getFileRecordList();
-
-        contentPane.remove(scrollPane);
-        scrollPane = new JScrollPane(fileRecordList);
-        contentPane.add(scrollPane);
-
-        mainFrame.repaint();
-        mainFrame.revalidate();
+        refreshRecordList();
     }
 
     private void attachDirectory() {
         SwingUtilities.invokeLater(() -> {
             fileRecordLoader = new FileRecordLoader(imageFileChooser, PluginType.NO_PLUGIN);
-            fileRecordList = fileRecordLoader.getFileRecordList();
-
-            contentPane.remove(scrollPane);
-            scrollPane = new JScrollPane(fileRecordList);
-            contentPane.add(scrollPane);
-
-            mainFrame.repaint();
-            mainFrame.revalidate();
+            refreshRecordList();
         });
+    }
+
+    private void refreshRecordList() {
+        fileRecordList = fileRecordLoader.getFileRecordList();
+        contentPane.remove(scrollPane);
+        scrollPane = new JScrollPane(fileRecordList);
+        contentPane.add(scrollPane);
+        contentPane.revalidate();
+        contentPane.repaint();
     }
 
     private void addChooseDirectoryListener() {
