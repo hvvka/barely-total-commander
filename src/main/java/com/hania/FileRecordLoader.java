@@ -1,7 +1,5 @@
 package com.hania;
 
-import com.hania.model.FileRecord;
-
 import javax.swing.*;
 import java.io.File;
 import java.util.Arrays;

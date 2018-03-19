@@ -1,7 +1,6 @@
-package com.hania.model;
+package com.hania;
 
-import com.hania.PluginGenerator;
-import com.hania.PluginType;
+import com.hania.model.CachedImage;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -19,7 +18,6 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-//todo move this away from `model` package
 public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, WeakReference<CachedImage>>> {
 
     private static final int IMAGE_SIZE = 250;
@@ -36,7 +34,7 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
 
     private PluginType pluginType;
 
-    public FileRecord(List<File> files, PluginType pluginType) {
+    FileRecord(List<File> files, PluginType pluginType) {
         this.files = files;
 
         pluginGenerator = new PluginGenerator();

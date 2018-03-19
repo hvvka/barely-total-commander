@@ -1,7 +1,6 @@
 package com.hania.plugins;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,14 +10,14 @@ import java.io.IOException;
  */
 public abstract class Plugin {
 
-    protected BufferedImage bufferedImage;
+    BufferedImage bufferedImage;
 
     public BufferedImage convertIcon(String path) {
         readImage(path);
         return bufferedImage;
     }
 
-    protected void readImage(String path) {
+    void readImage(String path) {
         try {
             File file = new File(path);
             bufferedImage = ImageIO.read(file);
@@ -26,5 +25,4 @@ public abstract class Plugin {
             System.out.println("Reading buffered image exception!");
         }
     }
-
 }

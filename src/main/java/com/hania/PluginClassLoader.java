@@ -27,7 +27,7 @@ public class PluginClassLoader extends ClassLoader {
         } catch (Exception e) {
             System.err.println("Class wasn't found or it was unreadable by our process!");
         }
-        return null;
+        return new byte[0];
     }
 
     @Override
@@ -57,7 +57,7 @@ public class PluginClassLoader extends ClassLoader {
 
         /* Try to load it from our repository */
         classData = getClassImplFromDataBase(className);
-        if (classData == null) {
+        if (classData == new byte[0]) {
             throw new ClassNotFoundException();
         }
         /* Define it (parse the class file) */

@@ -28,10 +28,8 @@ public class MainFrameController {
     private JScrollPane scrollPane;
 
     private JMenuBar menu;
-    private JMenu directoryMenu;
     private JMenuItem chooseDirectoryMenuItem;
 
-    private JMenu pluginMenu;
     private JMenuItem negativePluginMenuItem;
     private JMenuItem blackWhitePluginMenuItem;
     private JMenuItem grayScalePluginMenuItem;
@@ -120,8 +118,7 @@ public class MainFrameController {
     }
 
     private void initPluginMenu() {
-        pluginMenu = mainFrame.getPluginMenu();
-        pluginMenu = new JMenu(MENU_PLUGIN_LABEL);
+        JMenu pluginMenu = new JMenu(MENU_PLUGIN_LABEL);
 
         saturationPluginMenuItem = mainFrame.getSaturationPluginMenuItem();
         saturationPluginMenuItem = new JMenuItem(SATURATION_PLUGIN_MENU_ITEM_LABEL);
@@ -150,8 +147,7 @@ public class MainFrameController {
         menu = mainFrame.getMenu();
         menu = new JMenuBar();
 
-        directoryMenu = mainFrame.getDirectoryMenu();
-        directoryMenu = new JMenu(MENU_DIRECTORY_LABEL);
+        JMenu directoryMenu = new JMenu(MENU_DIRECTORY_LABEL);
         menu.add(directoryMenu);
 
         chooseDirectoryMenuItem = mainFrame.getChooseDirectoryMenuItem();
