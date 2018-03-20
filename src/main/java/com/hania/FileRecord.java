@@ -2,6 +2,8 @@ package com.hania;
 
 import com.hania.model.CachedImage;
 import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,17 +22,13 @@ import java.util.concurrent.ConcurrentMap;
 public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, WeakReference<CachedImage>>> {
 
     private static final int IMAGE_SIZE = 250;
+    private static final Logger LOG = LoggerFactory.getLogger(FileRecord.class);
 
     private ConcurrentMap<String, WeakReference<CachedImage>> records;
-
     private JList<Object> list;
-
     private DefaultListModel<Object> model;
-
     private PluginGenerator pluginGenerator;
-
     private List<File> files;
-
     private PluginType pluginType;
 
     FileRecord(List<File> files, PluginType pluginType) {
@@ -57,7 +55,7 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
         try {
             return new ConcurrentHashMap.SimpleEntry<>(file.getCanonicalPath(), weakCachedImage);
         } catch (IOException e) {
-            System.err.println("Couldn't add record to map!");
+            LOG.error("Couldn't add record to map!");
             return null;
         }
     }
@@ -74,7 +72,7 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
     private BufferedImage getBufferedImage(File file) {
         Object customPlugin = pluginGenerator.getPlugin(pluginType);
         BufferedImage bufferedImage = pluginGenerator.invokeConvertIconMethod(customPlugin, file.getAbsolutePath());
-        System.out.println("Applying " + pluginType + " plugin to: " + file.getName());
+        LOG.info("Applying {} plugin to: {}", pluginType, file.getName());
         return Scalr.resize(Objects.requireNonNull(bufferedImage), IMAGE_SIZE);
     }
 
@@ -111,7 +109,7 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
                     list, value, index, isSelected, cellHasFocus);
 
             if (records.get(value.toString()).get() == null) {
-                System.err.println("Weak reference is null. Loading an image...");
+                LOG.warn("Weak reference is null. Loading an image...");
                 records.put((String) value, getCachedImage(new File(value.toString())));
             }
 

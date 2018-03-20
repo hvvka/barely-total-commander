@@ -1,5 +1,8 @@
 package com.hania;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,6 +11,8 @@ import java.lang.reflect.Method;
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
 public class PluginGenerator {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PluginGenerator.class);
 
     private static final String NO_PLUGIN_CLASS_NAME = "com.hania.plugins.Plugin";
     private static final String GRAY_SCALE_PLUGIN_CLASS_NAME = "com.hania.plugins.GrayScalePlugin";
@@ -40,7 +45,7 @@ public class PluginGenerator {
         try {
             return (BufferedImage) methods[argumentIndex].invoke(pluginObject, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            System.err.println("Plugin method invocation exception");
+            LOG.error("Plugin method invocation exception");
         }
 
         return null;
@@ -55,7 +60,7 @@ public class PluginGenerator {
         try {
             pluginClass = pluginClassLoader.loadClass(getPluginClassName(pluginType));
         } catch (ClassNotFoundException e) {
-            System.err.println("Creating plugin class exception!");
+            LOG.error("Creating plugin class exception!");
             return true;
         }
         return false;
@@ -82,7 +87,7 @@ public class PluginGenerator {
         try {
             pluginObject = pluginClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            System.err.println("Creating plugin instance exception!");
+            LOG.error("Creating plugin instance exception!");
         }
     }
 

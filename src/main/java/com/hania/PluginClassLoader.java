@@ -1,5 +1,8 @@
 package com.hania;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +12,8 @@ import java.util.Map;
  */
 public class PluginClassLoader extends ClassLoader {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PluginClassLoader.class);
+
     private Map<String, Class> classes;
 
     PluginClassLoader() {
@@ -16,7 +21,7 @@ public class PluginClassLoader extends ClassLoader {
     }
 
     private byte[] getClassImplFromDataBase(String className) {
-        System.out.println("Fetching the implementation of " + className);
+        LOG.info("Fetching the implementation of {}", className);
         byte[] result;
         try {
             try (FileInputStream fileInputStream = new FileInputStream("store\\" + className + ".impl")) {
@@ -25,7 +30,7 @@ public class PluginClassLoader extends ClassLoader {
             }
             return result;
         } catch (Exception e) {
-            System.err.println("Class wasn't found or it was unreadable by our process!");
+            LOG.error("Class wasn't found or it was unreadable by our process!");
         }
         return new byte[0];
     }
@@ -39,20 +44,20 @@ public class PluginClassLoader extends ClassLoader {
     public synchronized Class loadClass(String className, boolean resolveIt) throws ClassNotFoundException {
         Class resultClass;
         byte[] classData;
-        System.out.println("Load class: " + className);
+        LOG.info("Load class: {}", className);
         /* Check our local cache of classes */
         resultClass = classes.get(className);
         if (resultClass != null) {
-            System.out.println("Returning cached resultClass.");
+            LOG.info("Returning cached resultClass.");
             return resultClass;
         }
 
         /* Check with the primordial class loader */
         try {
-            System.out.println("Returning system class (in CLASSPATH).");
+            LOG.info("Returning system class (in CLASSPATH).");
             return super.findSystemClass(className);
         } catch (ClassNotFoundException e) {
-            System.err.println("Not a system class.");
+            LOG.error("Not a system class.");
         }
 
         /* Try to load it from our repository */
@@ -71,7 +76,7 @@ public class PluginClassLoader extends ClassLoader {
         }
 
         classes.put(className, resultClass);
-        System.out.println("Returning newly loaded class.");
+        LOG.info("Returning newly loaded class.");
 
         return resultClass;
     }

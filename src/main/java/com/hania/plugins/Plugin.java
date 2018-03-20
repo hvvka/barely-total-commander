@@ -1,5 +1,8 @@
 package com.hania.plugins;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,6 +12,8 @@ import java.io.IOException;
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
 public class Plugin {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Plugin.class);
 
     BufferedImage bufferedImage;
 
@@ -22,7 +27,7 @@ public class Plugin {
             File file = new File(path);
             bufferedImage = ImageIO.read(file);
         } catch(IOException e) {
-            System.err.println("Reading buffered image exception!");
+            LOG.error("Reading buffered image exception!");
         }
     }
 }
