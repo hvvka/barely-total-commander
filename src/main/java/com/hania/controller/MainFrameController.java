@@ -6,28 +6,18 @@ import com.hania.PluginType;
 import com.hania.view.MainFrame;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
 public class MainFrameController {
 
-    private static final String MENU_DIRECTORY_LABEL = "File explorer";
-    private static final String CHOOSE_DIRECTORY_MENU_ITEM_LABEL = "Choose directory";
-    private static final String MENU_PLUGIN_LABEL = "Plugins";
-    private static final String SATURATION_PLUGIN_MENU_ITEM_LABEL = "Increase saturation";
-    private static final String GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL = "Gray scale";
-    private static final String BLACK_WHITE_PLUGIN_MENU_ITEM_LABEL = "Black&white";
-    private static final String NEGATIVE_PLUGIN_MENU_ITEM_LABEL = "Negative";
-    private static final String NO_PLUGIN_MENU_ITEM_LABEL = "No plugin";
-
     private final MainFrame mainFrame;
 
     private JPanel contentPane;
     private JScrollPane scrollPane;
 
-    private JMenuBar menu;
+    private JMenuBar jMenuBar;
     private JMenuItem chooseDirectoryMenuItem;
 
     private JMenuItem negativePluginMenuItem;
@@ -103,12 +93,10 @@ public class MainFrameController {
 
     private void initComponents() {
         mainFrame.setVisible(true);
-
         initContentPane();
         initMenu();
         initPluginMenu();
         initList();
-
         mainFrame.revalidate();
         mainFrame.repaint();
     }
@@ -118,52 +106,43 @@ public class MainFrameController {
     }
 
     private void initPluginMenu() {
-        JMenu pluginMenu = new JMenu(MENU_PLUGIN_LABEL);
+        JMenu pluginMenu = mainFrame.getPluginMenu();
 
         saturationPluginMenuItem = mainFrame.getSaturationPluginMenuItem();
-        saturationPluginMenuItem = new JMenuItem(SATURATION_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(saturationPluginMenuItem);
 
         grayScalePluginMenuItem = mainFrame.getGrayScalePluginMenuItem();
-        grayScalePluginMenuItem = new JMenuItem(GRAY_SCALE_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(grayScalePluginMenuItem);
 
         blackWhitePluginMenuItem = mainFrame.getBlackWhitePluginMenuItem();
-        blackWhitePluginMenuItem = new JMenuItem(BLACK_WHITE_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(blackWhitePluginMenuItem);
 
         negativePluginMenuItem = mainFrame.getNegativePluginMenuItem();
-        negativePluginMenuItem = new JMenuItem(NEGATIVE_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(negativePluginMenuItem);
 
         noPluginMenuItem = mainFrame.getNoPluginMenuItem();
-        noPluginMenuItem = new JMenuItem(NO_PLUGIN_MENU_ITEM_LABEL);
         pluginMenu.add(noPluginMenuItem);
 
-        menu.add(pluginMenu);
+        jMenuBar.add(pluginMenu);
     }
 
     private void initMenu() {
-        menu = mainFrame.getMenu();
-        menu = new JMenuBar();
+        jMenuBar = mainFrame.getJMenuBar();
 
-        JMenu directoryMenu = new JMenu(MENU_DIRECTORY_LABEL);
-        menu.add(directoryMenu);
+        JMenu directoryMenu = mainFrame.getDirectoryMenu();
+        jMenuBar.add(directoryMenu);
 
         chooseDirectoryMenuItem = mainFrame.getChooseDirectoryMenuItem();
-        chooseDirectoryMenuItem = new JMenuItem(CHOOSE_DIRECTORY_MENU_ITEM_LABEL);
         directoryMenu.add(chooseDirectoryMenuItem);
 
-        mainFrame.setJMenuBar(menu);
+        mainFrame.setJMenuBar(jMenuBar);
     }
 
     private void initContentPane() {
         contentPane = mainFrame.getContentPane();
-        contentPane = new JPanel(new GridLayout(1, 1));
         mainFrame.setContentPane(contentPane);
 
         scrollPane = mainFrame.getScrollPane();
-        scrollPane = new JScrollPane();
         contentPane.add(scrollPane);
     }
 }
