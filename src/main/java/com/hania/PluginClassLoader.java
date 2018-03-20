@@ -52,7 +52,7 @@ public class PluginClassLoader extends ClassLoader {
             System.out.println("Returning system class (in CLASSPATH).");
             return super.findSystemClass(className);
         } catch (ClassNotFoundException e) {
-            System.out.println("Not a system class.");
+            System.err.println("Not a system class.");
         }
 
         /* Try to load it from our repository */

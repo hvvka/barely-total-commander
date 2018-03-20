@@ -3,7 +3,6 @@ package com.hania;
 import com.hania.model.CachedImage;
 import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -36,12 +35,10 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
 
     FileRecord(List<File> files, PluginType pluginType) {
         this.files = files;
-
         pluginGenerator = new PluginGenerator();
         this.pluginType = pluginType;
 
         records = new ConcurrentHashMap<>();
-
         model = new DefaultListModel<>();
         list = new JList<>(model);
         list.setCellRenderer(new ImageListRenderer());
@@ -75,24 +72,10 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
     }
 
     private BufferedImage getBufferedImage(File file) {
-        BufferedImage bufferedImage = null;
-        try {
-            bufferedImage = ImageIO.read(file);
-        } catch (IOException e) {
-            System.err.println("Achtung! Loading image exception.");
-        }
-
-        bufferedImage = convertImageWithPlugin(file, bufferedImage);
+        Object customPlugin = pluginGenerator.getPlugin(pluginType);
+        BufferedImage bufferedImage = pluginGenerator.invokeConvertIconMethod(customPlugin, file.getAbsolutePath());
+        System.out.println("Applying " + pluginType + " plugin to: " + file.getName());
         return Scalr.resize(Objects.requireNonNull(bufferedImage), IMAGE_SIZE);
-    }
-
-    private BufferedImage convertImageWithPlugin(File file, BufferedImage bufferedImage) {
-        if (pluginType != PluginType.NO_PLUGIN) {
-            Object customPlugin = pluginGenerator.getPlugin(pluginType);
-            bufferedImage = pluginGenerator.invokeConvertIconMethod(customPlugin, file.getAbsolutePath());
-            System.out.println("Applying " + pluginType + " plugin to: " + file.getName());
-        }
-        return bufferedImage;
     }
 
     private void addRecordsToMap(List<ConcurrentMap.Entry<String, WeakReference<CachedImage>>> entries) {

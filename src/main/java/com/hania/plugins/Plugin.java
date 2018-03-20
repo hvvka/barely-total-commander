@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-public abstract class Plugin {
+public class Plugin {
 
     BufferedImage bufferedImage;
 
@@ -22,7 +22,7 @@ public abstract class Plugin {
             File file = new File(path);
             bufferedImage = ImageIO.read(file);
         } catch(IOException e) {
-            System.out.println("Reading buffered image exception!");
+            System.err.println("Reading buffered image exception!");
         }
     }
 }

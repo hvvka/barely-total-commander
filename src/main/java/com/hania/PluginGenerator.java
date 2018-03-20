@@ -21,7 +21,7 @@ public class PluginGenerator {
 
     private Object pluginObject;
 
-    public PluginGenerator() {
+    PluginGenerator() {
         this.pluginClassLoader = new PluginClassLoader();
     }
 
@@ -40,7 +40,7 @@ public class PluginGenerator {
         try {
             return (BufferedImage) methods[argumentIndex].invoke(pluginObject, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Plugin method invocation exception");
+            System.err.println("Plugin method invocation exception");
         }
 
         return null;
@@ -55,7 +55,7 @@ public class PluginGenerator {
         try {
             pluginClass = pluginClassLoader.loadClass(getPluginClassName(pluginType));
         } catch (ClassNotFoundException e) {
-            System.out.println("Creating plugin class exception!");
+            System.err.println("Creating plugin class exception!");
             return true;
         }
         return false;
@@ -82,7 +82,7 @@ public class PluginGenerator {
         try {
             pluginObject = pluginClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            System.out.println("Creating plugin instance exception!");
+            System.err.println("Creating plugin instance exception!");
         }
     }
 
