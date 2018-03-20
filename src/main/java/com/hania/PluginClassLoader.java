@@ -24,7 +24,8 @@ public class PluginClassLoader extends ClassLoader {
         LOG.info("Fetching the implementation of {}", className);
         byte[] result;
         try {
-            try (FileInputStream fileInputStream = new FileInputStream("store\\" + className + ".impl")) {
+            String input = className.replace('.', '/') + ".class";
+            try (FileInputStream fileInputStream = new FileInputStream(input)) {
                 result = new byte[fileInputStream.available()];
                 fileInputStream.read(result);
             }
@@ -42,39 +43,32 @@ public class PluginClassLoader extends ClassLoader {
 
     @Override
     public synchronized Class loadClass(String className, boolean resolveIt) throws ClassNotFoundException {
+        Class resultClass;
+        byte[] classData;
         LOG.info("Load class: {}", className);
-
-        Class resultClass = getCachedClass(className);
-        if (resultClass != null) return resultClass;
-
-        /* Check with the primordial class loader */
-        try {
-            LOG.info("Returning system class.");
-            return super.findSystemClass(className);
-        } catch (ClassNotFoundException e) {
-            LOG.warn("Not a system class!", e);
-        }
-
-        /* Try to load it from our repository */
-        return loadFromLocalRepository(className, resolveIt);
-    }
-
-    private Class getCachedClass(String className) {
-        Class resultClass = classes.get(className);
+        /* Check our local cache of classes */
+        resultClass = classes.get(className);
         if (resultClass != null) {
             LOG.info("Returning cached resultClass.");
             return resultClass;
         }
-        return null;
-    }
 
-    private Class loadFromLocalRepository(String className, boolean resolveIt) throws ClassNotFoundException {
-        byte[] classData = getClassImplFromDataBase(className);
+        /* Check with the primordial class loader */
+        try {
+            resultClass = super.findSystemClass(className);
+            LOG.info("Returning system class.");
+            return resultClass;
+        } catch (ClassNotFoundException e) {
+            LOG.error("Not a system class.");
+        }
+
+        /* Try to load it from our repository */
+        classData = getClassImplFromDataBase(className);
         if (classData == new byte[0]) {
             throw new ClassNotFoundException();
         }
         /* Define it (parse the class file) */
-        Class resultClass = defineClass(classData, 0, classData.length);
+        resultClass = defineClass(classData, 0, classData.length);
         if (resultClass == null) {
             throw new ClassFormatError();
         }
@@ -85,6 +79,7 @@ public class PluginClassLoader extends ClassLoader {
 
         classes.put(className, resultClass);
         LOG.info("Returning newly loaded class.");
+
         return resultClass;
     }
 }

@@ -23,7 +23,6 @@ public class PluginGenerator {
     private PluginClassLoader pluginClassLoader;
 
     private Class pluginClass;
-
     private Object pluginObject;
 
     PluginGenerator() {
