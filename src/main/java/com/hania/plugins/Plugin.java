@@ -27,7 +27,7 @@ public class Plugin {
             File file = new File(path);
             bufferedImage = ImageIO.read(file);
         } catch(IOException e) {
-            LOG.error("Reading buffered image exception!");
+            LOG.error("Reading buffered image exception!", e);
         }
     }
 }

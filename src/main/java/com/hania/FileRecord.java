@@ -55,7 +55,7 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
         try {
             return new ConcurrentHashMap.SimpleEntry<>(file.getCanonicalPath(), weakCachedImage);
         } catch (IOException e) {
-            LOG.error("Couldn't add record to map!");
+            LOG.error("Couldn't add record to map!", e);
             return null;
         }
     }

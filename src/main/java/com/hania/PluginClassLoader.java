@@ -30,7 +30,7 @@ public class PluginClassLoader extends ClassLoader {
             }
             return result;
         } catch (Exception e) {
-            LOG.error("Class wasn't found or it was unreadable by our process!");
+            LOG.error("Class wasn't found or it was unreadable by our process!", e);
         }
         return new byte[0];
     }
@@ -42,31 +42,39 @@ public class PluginClassLoader extends ClassLoader {
 
     @Override
     public synchronized Class loadClass(String className, boolean resolveIt) throws ClassNotFoundException {
-        Class resultClass;
-        byte[] classData;
         LOG.info("Load class: {}", className);
-        /* Check our local cache of classes */
-        resultClass = classes.get(className);
+
+        Class resultClass = getCachedClass(className);
+        if (resultClass != null) return resultClass;
+
+        /* Check with the primordial class loader */
+        try {
+            LOG.info("Returning system class.");
+            return super.findSystemClass(className);
+        } catch (ClassNotFoundException e) {
+            LOG.warn("Not a system class!", e);
+        }
+
+        /* Try to load it from our repository */
+        return loadFromLocalRepository(className, resolveIt);
+    }
+
+    private Class getCachedClass(String className) {
+        Class resultClass = classes.get(className);
         if (resultClass != null) {
             LOG.info("Returning cached resultClass.");
             return resultClass;
         }
+        return null;
+    }
 
-        /* Check with the primordial class loader */
-        try {
-            LOG.info("Returning system class (in CLASSPATH).");
-            return super.findSystemClass(className);
-        } catch (ClassNotFoundException e) {
-            LOG.error("Not a system class.");
-        }
-
-        /* Try to load it from our repository */
-        classData = getClassImplFromDataBase(className);
+    private Class loadFromLocalRepository(String className, boolean resolveIt) throws ClassNotFoundException {
+        byte[] classData = getClassImplFromDataBase(className);
         if (classData == new byte[0]) {
             throw new ClassNotFoundException();
         }
         /* Define it (parse the class file) */
-        resultClass = defineClass(classData, 0, classData.length);
+        Class resultClass = defineClass(classData, 0, classData.length);
         if (resultClass == null) {
             throw new ClassFormatError();
         }
@@ -77,7 +85,6 @@ public class PluginClassLoader extends ClassLoader {
 
         classes.put(className, resultClass);
         LOG.info("Returning newly loaded class.");
-
         return resultClass;
     }
 }

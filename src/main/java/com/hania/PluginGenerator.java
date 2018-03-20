@@ -45,7 +45,7 @@ public class PluginGenerator {
         try {
             return (BufferedImage) methods[argumentIndex].invoke(pluginObject, arguments);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            LOG.error("Plugin method invocation exception");
+            LOG.error("Plugin method invocation exception!", e);
         }
 
         return null;
@@ -60,7 +60,7 @@ public class PluginGenerator {
         try {
             pluginClass = pluginClassLoader.loadClass(getPluginClassName(pluginType));
         } catch (ClassNotFoundException e) {
-            LOG.error("Creating plugin class exception!");
+            LOG.error("Creating plugin class exception!", e);
             return true;
         }
         return false;
@@ -87,7 +87,7 @@ public class PluginGenerator {
         try {
             pluginObject = pluginClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            LOG.error("Creating plugin instance exception!");
+            LOG.error("Creating plugin instance exception!", e);
         }
     }
 
