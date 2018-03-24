@@ -14,7 +14,7 @@ public class PluginGenerator {
 
     private static final Logger LOG = LoggerFactory.getLogger(PluginGenerator.class);
 
-    private static final String NO_PLUGIN_CLASS_NAME = "com.hania.plugins.Plugin";
+    private static final String NO_PLUGIN_CLASS_NAME = "libs.com.hania.plugins.Plugin";
     private static final String GRAY_SCALE_PLUGIN_CLASS_NAME = "com.hania.plugins.GrayScalePlugin";
     private static final String NEGATIVE_PLUGIN_CLASS_NAME = "com.hania.plugins.NegativePlugin";
     private static final String BLACK_WHITE_PLUGIN_CLASS_NAME = "com.hania.plugins.BlackWhitePlugin";
