@@ -42,6 +42,26 @@ public class MainFrameController {
         addPluginListeners();
     }
 
+    private void addChooseDirectoryListener() {
+        chooseDirectoryMenuItem.addActionListener(e -> {
+            imageFileChooser = new ImageFileChooser();
+            int returnVal = imageFileChooser.showOpenDialog(imageFileChooser);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                String path = imageFileChooser.getSelectedFile().getAbsolutePath();
+                mainFrame.setTitle(path);
+            }
+            attachDirectory();
+        });
+    }
+
+    private void attachDirectory() {
+        SwingUtilities.invokeLater(() -> {
+            fileRecordLoader = new FileRecordLoader(imageFileChooser, PluginType.NO_PLUGIN);
+            refreshRecordList();
+        });
+    }
+
     private void addPluginListeners() {
         noPluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NO_PLUGIN));
         negativePluginMenuItem.addActionListener(e -> attachPluginToAttachedDirectory(PluginType.NEGATIVE));
@@ -62,13 +82,6 @@ public class MainFrameController {
         refreshRecordList();
     }
 
-    private void attachDirectory() {
-        SwingUtilities.invokeLater(() -> {
-            fileRecordLoader = new FileRecordLoader(imageFileChooser, PluginType.NO_PLUGIN);
-            refreshRecordList();
-        });
-    }
-
     private void refreshRecordList() {
         fileRecordList = fileRecordLoader.getFileRecordList();
         contentPane.remove(scrollPane);
@@ -76,19 +89,6 @@ public class MainFrameController {
         contentPane.add(scrollPane);
         contentPane.revalidate();
         contentPane.repaint();
-    }
-
-    private void addChooseDirectoryListener() {
-        chooseDirectoryMenuItem.addActionListener(e -> {
-            imageFileChooser = new ImageFileChooser();
-            int returnVal = imageFileChooser.showOpenDialog(imageFileChooser);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                String path = imageFileChooser.getSelectedFile().getAbsolutePath();
-                mainFrame.setTitle(path);
-            }
-            attachDirectory();
-        });
     }
 
     private void initComponents() {

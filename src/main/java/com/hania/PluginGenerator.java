@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-public class PluginGenerator {
+class PluginGenerator {
 
     private static final Logger LOG = LoggerFactory.getLogger(PluginGenerator.class);
 
@@ -29,12 +29,12 @@ public class PluginGenerator {
         this.pluginClassLoader = new PluginClassLoader();
     }
 
-    public Object getPlugin(PluginType pluginType) {
+    Object getPlugin(PluginType pluginType) {
         loadPlugin(pluginType);
         return pluginObject;
     }
 
-    public BufferedImage invokeConvertIconMethod(Object pluginObject, String path) {
+    BufferedImage invokeConvertIconMethod(Object pluginObject, String path) {
         Method[] methods = pluginObject.getClass().getMethods();
         int argumentIndex = 0;
         int numberOfArguments = methods[argumentIndex].getParameterCount();

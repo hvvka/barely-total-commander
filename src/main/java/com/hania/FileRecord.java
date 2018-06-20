@@ -60,7 +60,7 @@ public class FileRecord extends SwingWorker<Void, ConcurrentMap.Entry<String, We
         }
     }
 
-    public JList<Object> getList() {
+    JList<Object> getList() {
         return list;
     }
 
